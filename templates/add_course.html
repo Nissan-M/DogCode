@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Add Course{% endblock %}
+{% block content %}
+<form action="" method="POST">
+    <input type="text" name="course_name" placeholder="New Course...">
+    <select name="teacher_id" id="">
+        {% for teacher in teachers %}
+        <option value="{{ teacher[0] }}">{{ teacher[1] }}</option>
+        {% endfor %}
+    </select>
+</form>
+{% endblock %}

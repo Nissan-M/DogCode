@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="/static/stylesheet/style.css">
     <title>{% block title %}{% endblock %}</title>
+    <script src="https://kit.fontawesome.com/ebab69fd69.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <details>
-        <summary></summary>
-        <nav class="menu">
-          <a href="/">Home</a>
-          <a href="#link">Link</a>
-          <a href="#link">Link</a>
-          <a href="/register">Register</a>
-          <a href="/login">Login</a>
-        </nav>
-      </details>
+  <div class="header">
+    <div class="side-nav">
+      <a href="/" class="logo">
+        <img src="" class="logo_img">
+      </a>
+      <ul class="nav_links">
+        <li><a href="/courses"><i class="fa-solid fa-microchip"></i><p>Courses</p></a></li>
+        <li><a href="/teachers"><i class="fa-solid fa-chalkboard-user"></i><p>Teachers</p></a></li>
+        <li><a href="/students"><i class="fa-solid fa-graduation-cap"></i><p>Students</p></a></li>
+        <li><a href="/login"><i class="fa-solid fa-right-to-bracket"></i><p>Login</p></a></li>
+        <li><a href="/register"><i class="fa-solid fa-id-card"></i><p>Register</p></a></li>
+        <!-- <div class="active"></div> -->
+      </ul>
+    </div>
     {% block content %}
     {% endblock %}
+    
+  </div>
 </body>
 </html>

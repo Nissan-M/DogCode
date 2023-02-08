@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 app = Flask(__name__)
 from setup_db import execute_query
-
+from sqlite3 import IntegrityError
 
 @app.route('/')
 def index():
@@ -41,7 +41,9 @@ def register():
 
 @app.route('/new_course')
 def new_course():
-    pass
+    teachers = execute_query
+    if request.method == "POST":
+
 
 
 @app.route('/add_student')
