@@ -47,3 +47,4 @@ def new_course():
 @app.route('/add_student')
 def add_student():
     pass
+
