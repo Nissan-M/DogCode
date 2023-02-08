@@ -1,9 +1,9 @@
 import sqlite3
-import faker
+from faker import Faker
 
 
-def execute_query(sql):
-    with sqlite3.connect("college.db") as conn:
+def query(sql):
+    with sqlite3.connect("database.db") as conn:
         cur = conn.cursor()
         cur.execute(sql)
         return cur.fetchall()
@@ -11,14 +11,14 @@ def execute_query(sql):
 
 def create_table():
     # role table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS role (
         role_id INTEGER PRIMARY KEY AUTOINCREMENT,
         role_name TEXT NOT NULL UNIQUE
     )
     """)
     # user table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS user (
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_email TEXT NOT NULL UNIQUE,
@@ -28,7 +28,7 @@ def create_table():
     )
     """)
     # student table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS student (
         student_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER UNIQUE,
@@ -41,7 +41,7 @@ def create_table():
     )
     """)
     # teacher table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS teacher (
         teacher_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER UNIQUE,
@@ -54,7 +54,7 @@ def create_table():
     )
     """)
     # course table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS course (
         course_id INTEGER PRIMARY KEY AUTOINCREMENT,
         course_name TEXT NOT NULL UNIQUE,
@@ -62,7 +62,7 @@ def create_table():
     )
     """)
     # courseNo table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS courseNo (
         courseNo_id INTEGER PRIMARY KEY AUTOINCREMENT,
         courseNo_sdate DATE NOT NULL,
@@ -74,7 +74,7 @@ def create_table():
     )
     """)
     # courseNo - student table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS courseNo_student (
         courseNo_student_id INTEGER PRIMARY KEY AUTOINCREMENT,
         courseNo_id INTEGER,
@@ -84,7 +84,7 @@ def create_table():
     )
     """)
     # course - student table
-    execute_query("""
+    query("""
     CREATE TABLE IF NOT EXISTS course_student (
         course_student_id INTEGER PRIMARY KEY AUTOINCREMENT,
         course_id INTEGER,
@@ -95,12 +95,33 @@ def create_table():
     """)
 
 
-def generate():
+def generate_data():
     for role in ["student", "teacher", "admin"]:
-        execute_query(f"INSERT INTO role (role_name) VALUES ('{role}')")
-    execute_query("INSERT INTO user (user_email, user_password, role_id) VALUES ('admin@admin.com', 'admin', '3')")
+        query(f"INSERT INTO role (role_name) VALUES ('{role}')")
+    query("INSERT INTO user (user_email, user_password, role_id) VALUES ('admin@admin.com', 'admin', '3')")
+
+
+def fake_data():
+    fake = Faker()
+
+    for user in range(10):
+        query(f"INSERT INTO user ('user_email', 'user_password', 'role_id') VALUES ('{fake.email()}', '{fake.password()}', '2')")
+    teachers = query("SELECT user_id FROM user WHERE role_id='2'")
+    for teacher in teachers:
+        query(f"""
+        INSERT INTO teacher ('user_id', 'teacher_name', 'teacher_gender', 'teacher_bdate', 'teacher_phone', 'teacher_address')
+        VALUES ('{teacher[0]}', '{fake.name()}', 'X', '0', '0', 'X')
+        """)
+
+    for user in range(30):
+        query(f"INSERT INTO user ('user_email', 'user_password', 'role_id') VALUES ('{fake.email()}', '{fake.password()}', '3')")
+    students = query("SELECT user_id FROM user WHERE role_id='3'")
+    for student in students:
+        query(f"""INSERT INTO student ('user_id', 'student_name', 'student_gender', 'student_bdate', 'student_phone', 'student_address')
+        VALUES ('{student[0]}', '{fake.name()}', 'X', '0', '0', 'X')""")
+
 
 if __name__ == "__main__":
     create_table()
-    generate()
-    
+    generate_data()
+    fake_data()

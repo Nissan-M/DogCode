@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+
+<div class="container">
+
+    <div class="container_1">
+        <fieldset>
+            <legend>New user registration</legend>
+            <form action="/register" method="POST">
+                <input type="email" name="email" id="" placeholder="Email...">
+                <input type="password" name="password" id="" placeholder="Password...">
+                <select name="role" id="">
+                    {% for role in roles %}
+                    <option value="{{ role[0] }}">{{ role[1] }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Enter">
+            </form>
+        </fieldset>
+    </div>
+    
+    <div class="container_2">
+        <fieldset>
+            <legend>Create new Course</legend>
+            <form action="/create_course" method="POST">
+                <input type="text" name="course_name" placeholder="Course Name...">
+                <input type="text" name="course_desc" placeholder="Course Description...">
+                <input type="submit" value="Add">
+            </form>
+        </fieldset>
+    </div>
+
+    <div class="container_3">
+        <fieldset>
+            <legend>Add Teacher to Course</legend>
+            <form action="/courseNo_teacher" method="POST">
+                <select name="course_id" id="">
+                    {% for course in courses %}
+                    <option value="{{ course[0] }}"><p>{{ course[1] }}</p></option>
+                    {% endfor %}
+                </select> 
+                <select name="teacher_id" id="">
+                    {% for teacher in teachers %}
+                    <option value="{{ teacher[0] }}"><p>{{ teacher[2] }}</p></option>
+                    {% endfor %}
+                </select> 
+                <input type="date" name="start_date" id="">
+                <input type="date" name="end_date" id="">
+                <input type="submit" value="Add">
+            </form>
+        </fieldset>
+    </div>
+
+    <div class="container_4">
+        <fieldset>
+            <legend>Add Student to Course</legend>
+            <form action="/courseNo_student" method="post">
+                <select name="courseNo_id" id="">
+                    {% for courseNo in course_nums %}
+                    <option value="{{ courseNo[0] }}"><p>{{ courseNo[5] }} - {{ courseNo[6] }}</p></option>
+                    {% endfor %}
+                </select>
+                <select name="student_id" id="">
+                    {% for student in students %}
+                    <option value="{{ student[0] }}"><p>{{ student[2] }}</p></option>
+                    {% endfor %}
+                </select> 
+                <input type="submit" value="add">
+            </form>
+        </fieldset>
+    </div>
+
+</div>
+{% endblock %}

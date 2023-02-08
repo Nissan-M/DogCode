@@ -1,1 +1,4 @@
-test.py
+__pycache__/app.cpython-310.pyc
+__pycache__/setup_db.cpython-310.pyc
+database.db
+.DS_Store
