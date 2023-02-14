@@ -1,0 +1,232 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: serif;
+}
+
+
+.background {
+    background-color: #F4F5F8;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+.main_con {
+    position: fixed;
+    display: grid;
+    grid-template-columns: [col1] 130px [col2] 50px [col3] auto [col4] 50px [end];
+    grid-template-rows: [row1] 50px [row2] auto [end];
+    width: 100%;
+    height: 100%;
+}
+/* ----------NAV-BAR---------- */
+.logo {
+    grid-column-start: col1;
+    grid-column-end: col2;
+    grid-row-start: row1;
+    grid-row-end: row2;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10%;
+    font-size: 140%;
+    background-color: #333A45;
+    color: #fff;
+}
+
+.logo > a {
+    text-decoration: none;
+    font-size: 110%;
+    font-weight: 600;
+    color: #fff;
+}
+
+.side_nav {
+    grid-column-start: col1;
+    grid-column-end: col2;
+    grid-row-start: row2;
+    grid-row-end: end;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 0;
+    gap: 5%;
+    background-color: #333A45;
+}
+
+
+.side_nav > a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    gap: 10%;
+    text-decoration: none;
+    font-size: 100%;
+    font-weight: 500;
+    color: #fff;
+}
+
+.side_nav > a:hover {
+    color: #FFA500;
+}
+/* ----------END---------- */
+
+
+/* ----------LOGIN---------- */
+.section_login {
+    grid-column-start: col3;
+    grid-column-end: col4;
+    grid-row-start: row2;
+    grid-row-end: end;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_con {
+    margin: 0 130px 0 0;
+    width: 350px;
+    height: 350px;
+    display: grid;
+    grid-template-columns: [c1] 2% [c2] auto [c3] 2% [c4];
+    grid-template-rows: [r1] 2% [r2] 25% [r3] 17.75% [r4] 17.75% [r5] 17.75% [r6] 17.75% [r7] 2% [r8];
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.10);
+
+}
+
+.header,
+.form_field_1,
+.form_field_2,
+.form_field_3,
+.form_field_4 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    grid-row-start: r2;
+    grid-row-end: r3;
+
+}
+
+.header > h2 {
+    color: #3e403f;
+    font-size: 250%;
+    font-weight: 550;
+}
+
+.form_field_1 {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    grid-row-start: r3;
+    grid-row-end: r4;
+
+}
+
+.form_field_2 {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    grid-row-start: r4;
+    grid-row-end: r5;
+}
+
+.form_field_3 {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    grid-row-start: r5;
+    grid-row-end: r6;
+}
+
+.form_field_4 {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    grid-row-start: r6;
+    grid-row-end: r7;
+}
+
+.field_item{
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #3e403f;
+    border-radius: 3px;
+}
+
+input[class="form_input"] {
+    width: 80%;
+    padding: 0 15px;
+    font-style: 18px;
+    color: #5E6472;
+    outline: none;
+    border: none; 
+}
+
+.btn-login {
+    width: 100%;
+    height: 40px;
+    color: #3e403f;
+    background-color: #fff;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+    font-size: 100%;
+    font-weight: 550;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+
+.btn-login:hover {
+    background-color: #FFA500;
+    box-shadow: none;
+}
+
+/* ----------END---------- */
+
+/* ----------ADMIN---------- */
+.section_admin {
+    grid-column-start: col3;
+    grid-column-end: col4;
+    grid-row-start: row2;
+    grid-row-end: end;
+
+    display: grid;
+    grid-template-rows: [r1]20%[r2]20%[r3]20%[r4]20%[r5];
+}
+
+.con_1 {
+    grid-row-start: r1;
+    grid-row-end: r2;
+}
+
+.con_2 {
+    grid-row-start: r2;
+    grid-row-end: r3;
+}
+
+.con_3 {
+    grid-row-start: r3;
+    grid-row-end: r4;
+}
+
+.con_4 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+}
+
+/* ----------END---------- */

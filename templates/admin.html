@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Admin{% endblock %}
 {% block content %}
+{% include 'navbar.html' %}
+<div class="section_admin">
 
-<div class="container">
-
-    <div class="container_1">
+    <div class="con_1">
         <fieldset>
             <legend>New user registration</legend>
-            <form action="/register" method="POST">
+            <form action="/new_user" method="POST">
                 <input type="email" name="email" id="" placeholder="Email...">
                 <input type="password" name="password" id="" placeholder="Password...">
                 <select name="role" id="">
@@ -20,21 +20,21 @@
         </fieldset>
     </div>
     
-    <div class="container_2">
+    <div class="con_2">
         <fieldset>
             <legend>Create new Course</legend>
-            <form action="/create_course" method="POST">
-                <input type="text" name="course_name" placeholder="Course Name...">
-                <input type="text" name="course_desc" placeholder="Course Description...">
+            <form action="/new_course" method="POST">
+                <input type="text" name="name" placeholder="Course Name...">
+                <input type="text" name="desc" placeholder="Course Description...">
                 <input type="submit" value="Add">
             </form>
         </fieldset>
     </div>
 
-    <div class="container_3">
+    <div class="con_3">
         <fieldset>
             <legend>Add Teacher to Course</legend>
-            <form action="/courseNo_teacher" method="POST">
+            <form action="/add_active_course" method="POST">
                 <select name="course_id" id="">
                     {% for course in courses %}
                     <option value="{{ course[0] }}"><p>{{ course[1] }}</p></option>
@@ -52,13 +52,13 @@
         </fieldset>
     </div>
 
-    <div class="container_4">
+    <div class="con_4">
         <fieldset>
             <legend>Add Student to Course</legend>
-            <form action="/courseNo_student" method="post">
-                <select name="courseNo_id" id="">
-                    {% for courseNo in course_nums %}
-                    <option value="{{ courseNo[0] }}"><p>{{ courseNo[5] }} - {{ courseNo[6] }}</p></option>
+            <form action="/add_student_to_active_course" method="post">
+                <select name="course_id" id="">
+                    {% for course in active_courses %}
+                    <option value="{{ course[0] }}"><p>{{ course[0] }}</p></option>
                     {% endfor %}
                 </select>
                 <select name="student_id" id="">

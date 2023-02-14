@@ -1,96 +1,96 @@
 from flask import Flask, render_template, redirect, url_for, request
+import crud
+
 app = Flask(__name__)
-from setup_db import query
-from sqlite3 import IntegrityError
-
-@app.route('/')
-def index():
-    return render_template("index.html")
+# app.config['SECRET_KEY'] = 'thisisasecretkey'
 
 
-@app.route('/login', methods=["POST", "GET"])
+# @app.before_request
+# def before_request_func():
+#     return render_template("login.html")
+
+
+@app.route('/', methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-        role = execute_query(
-            f"SELECT role_id FROM user WHERE user_email='{email}' and user_password='{password}'")[0][0]
-        if role is None:
-            return render_template("login.html", err="The email or password is incorrect")
-        if role == 1:
-            pass
-        if role == 2:
-            pass
-        if role == 3:
-            return redirect(url_for("register"))
-
+        indeficate = crud.login(email=request.form["email"],
+                                password=request.form["password"])
     return render_template("login.html")
 
 
+@app.route('/guest')
+def guest():
+    return render_template("guest.html")
+
+
+@app.route('/home')
+def home():
+    return render_template("home.html")
 
 
 @app.route('/admin')
 def admin():
-
-    teacher_db = query("""
-    SELECT teacher_id, teacher.user_id, teacher_name, user_email, user_password FROM teacher
-    JOIN user ON teacher.user_id=user.user_id
-        """)
-    teachers = [ teacher for teacher in teacher_db ]
-    courses = [ course for course in query("SELECT * FROM course") ]
-    courseNo_db = query("""
-    SELECT courseNo_id, courseNo_sdate, courseNo_edate, courseNo.course_id, courseNo.teacher_id, course.course_name, teacher.teacher_name FROM courseNo
-    LEFT JOIN course ON courseNo.course_id=course.course_id
-    LEFT JOIN teacher ON courseNo.teacher_id=teacher.teacher_id
-    """)
-    course_nums = [ course for course in courseNo_db ]
-    student_db = query("""
-    SELECT student_id, student.user_id, student_name, user_email, user_password FROM student
-    JOIN user ON student.user_id=user.user_id
-    """)
-    students = [ student for student in student_db ]
-    roles = query("SELECT * FROM role")
-
-    return render_template("admin.html", teachers=teachers, courses=courses, course_nums=course_nums, students=students, roles=roles)
+    roles = crud.show_all("role")
+    teachers = crud.show_all(table="teacher")
+    courses = crud.show_all(table="course")
+    active_courses = crud.show_all(table="active_course")
+    students = crud.show_all(table="student")
+    
+    return render_template("admin.html", roles=roles, teachers=teachers,
+                           courses=courses, active_courses=active_courses,
+                           students=students,)
 
 
-@app.route('/create_course', methods=["POST"])
-def create_course():
-
-    query(f"""
-    INSERT INTO course ('course_name', 'course_desc') 
-    VALUES ('{request.form['course_name']}', '{request.form['course_desc']}')""")
-
-    return redirect(url_for("admin"))
-
-
-@app.route('/courseNo_teacher', methods=["POST"])
-def teacher_course():
-
-    query(f"""
-    INSERT INTO courseNo ('course_id', 'teacher_id', 'courseNo_sdate', 'courseNo_edate')
-    VALUES ('{request.form['course_id']}', '{request.form['teacher_id']}','{request.form['start_date']}', '{request.form['end_date']}')
-    """)
-
-    return redirect(url_for("admin"))
-
-
-@app.route('/courseNo_student', methods=["POST"])
-def method_name():
-
-    query(f"""
-    INSERT INTO courseNo ('student_id', 'courseNo_id') 
-    VALUES ('{request.form['student_id']}', '{request.form['course_id']}')
-    """)
-
-    return redirect(url_for("admin"))
-
-
-@app.route('/register', methods=["POST"])
+@app.route('/new_user', methods=["POST"])
 def register():
+    crud.new_user(email=request.form["email"],
+                  password=request.form["password"],
+                  role=request.form["role"])
 
-    email = request.form["email"]
-    password = request.form["password"]
-    role = request.form["role"]
-    query(f"INSERT INTO user (user_email, user_password, role_id) VALUES ('{email}','{password}', '{role}')")
     return redirect(url_for("admin"))
+
+
+@app.route('/new_course', methods=["POST"])
+def create_course():
+    crud.new_course(name=request.form['name'],
+                    desc=request.form['desc'])
+
+    return redirect(url_for("admin"))
+
+
+@app.route('/add_active_course', methods=["POST"])
+def teacher_course():
+    crud.add_active_course(course_id=request.form['course_id'],
+                           teacher_id=request.form['teacher_id'],
+                           start_date=request.form['start_date'],
+                           end_date=request.form['end_date'])
+
+    return redirect(url_for("admin"))
+
+
+@app.route('/add_student_to_active_course', methods=["POST"])
+def method_name():
+    crud.add_active_course_student(active_course_id=request.form['student_id'],
+                                   student_id=request.form['course_id'])
+
+    return redirect(url_for("admin"))
+
+
+@app.route('/course')
+def course():
+    return render_template("course.html")
+
+
+@app.route('/teacher')
+def teacher():
+    return render_template("teacher.html")
+
+
+@app.route('/student')
+def student():
+    return render_template("student.html")
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

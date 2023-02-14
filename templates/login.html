@@ -1,13 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Register{% endblock %}
+{%block title %}Login Page{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="container_2">
-        <form method="POST">
-            <input type="email" name="email" id="" placeholder="Email...">
-            <input type="password" name="password" id="" placeholder="Password...">
-            <input type="submit" value="Login">
-        </form>
+<div class="section_login">
+  <form class="login_con" action="" method="POST">
+    <div class="header">
+      <h2>Login</h2>
     </div>
+    <div class="form_field_1">
+      <div class="field_item">
+        <i class="fa-solid fa-user"></i>
+        <input class="form_input" type="email" placeholder="Email / Username">
+      </div>
+    </div>
+    <div class="form_field_2">
+      <div class="field_item">
+        <i class="fa-solid fa-lock"></i>
+        <input class="form_input" type="password" placeholder="Password">
+      </div>
+    </div>
+    <div class="form_field_3">
+      <input class="btn-login" type="submit" value="Login">
+    </div>
+    <div class="form_field_4">
+      <a class="btn-login" href="/guest">Guest</a></button>
+    </div>
+  </form>
+  </div>
 </div>
 {% endblock %}
