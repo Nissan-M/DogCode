@@ -11,7 +11,8 @@ def convert_pic():
     return picture
 
 
-def add_fake_user(role, num):
+def add_fake_user(role, num, faker_seed):
+    Faker.seed(faker_seed)
     users = [(role, fake.email(), fake.password()) for i in range(num)]
     executemany_query("""
         INSERT INTO user (role, email, password)
@@ -20,7 +21,7 @@ def add_fake_user(role, num):
 
 
 def add_fake_profile(table, role, num, faker_seed, slice, max, min):
-    add_fake_user(role, num)
+    add_fake_user(role, num, faker_seed)
     Faker.seed(faker_seed)
     m_img, f_img = convert_pic()
     user_db = execute_query(f"SELECT user_id FROM user WHERE role='{role}'")
@@ -71,7 +72,7 @@ def create_active_course():
         for teacher in teacher_ids
     ]
     executemany_query("""
-        INSERT INTO active_course (
+        INSERT INTO ac (
             teacher_id, course_id, start_date, end_date
         )
         VALUES (?, ?, ?, ?)
@@ -81,15 +82,15 @@ def create_active_course():
 def add_studet_to_active_course():
     student_db = execute_query("SELECT student_id FROM student")
     student_ids = [student[0] for student in student_db]
-    courseNo_db = execute_query("SELECT active_course_id FROM active_course")
+    courseNo_db = execute_query("SELECT ac_id FROM ac")
     courseNo_ids = [course[0] for course in courseNo_db]
     student_course_ids = [
         (teacher, choice(courseNo_ids), randint(70, 100))
         for teacher in student_ids
     ]
     executemany_query("""
-        INSERT INTO course_stud (
-            student_id, active_course_id, grade
+        INSERT INTO ac_stud (
+            student_id, ac_id, grade
         )
         VALUES (?, ?, ?)
     """, student_course_ids)
@@ -97,10 +98,12 @@ def add_studet_to_active_course():
 
 if __name__ == "__main__":
     add_fake_profile(
-        table="student", role="Student", num=40, faker_seed=0, slice=15, min=21, max=40
+        table="student", role="Student", num=40,
+        faker_seed=0, slice=15, min=21, max=40
     )
     add_fake_profile(
-        table="teacher", role="Teacher", num=10, faker_seed=1, slice=3, min=35, max=70
+        table="teacher", role="Teacher", num=10,
+        faker_seed=1, slice=3, min=35, max=70
     )
     add_course()
     create_active_course()

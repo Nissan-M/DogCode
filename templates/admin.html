@@ -3,14 +3,13 @@
 {% block content %}
 {% include 'navbar.html' %}
 <div class="section_admin">
-
     <div class="con_1">
         <fieldset>
             <legend>New user registration</legend>
-            <form action="/new_user" method="POST">
-                <input type="email" name="email" id="" placeholder="Email...">
-                <input type="password" name="password" id="" placeholder="Password...">
-                <select name="role" id="">
+            <form action="/create_new_user" method="POST">
+                <input name="user_email" type="email" placeholder="Email...">
+                <input name="user_password" type="password" placeholder="Password...">
+                <select name="role">
                     <option value="Student">Student</option>
                     <option value="Teacher">Teacher</option>
                 </select>
@@ -22,9 +21,9 @@
     <div class="con_2">
         <fieldset>
             <legend>Create new Course</legend>
-            <form action="/new_course" method="POST">
-                <input type="text" name="name" placeholder="Course Name...">
-                <input type="text" name="desc" placeholder="Course Description...">
+            <form action="/create_new_course" method="POST">
+                <input type="text" name="course_name" placeholder="Course Name...">
+                <input type="text" name="course_desc" placeholder="Course Description...">
                 <input type="submit" value="Add">
             </form>
         </fieldset>
@@ -32,20 +31,20 @@
 
     <div class="con_3">
         <fieldset>
-            <legend>Add Teacher to Course</legend>
-            <form action="/add_active_course" method="POST">
-                <select name="course_id" id="">
-                    {% for course in courses %}
+            <legend>Create active course</legend>
+            <form action="/create_active_course" method="POST">
+                <select name="course_id">
+                    {% for course in course_list %}
                     <option value="{{ course[0] }}"><p>{{ course[1] }}</p></option>
                     {% endfor %}
                 </select> 
-                <select name="teacher_id" id="">
-                    {% for teacher in teachers %}
-                    <option value="{{ teacher[0] }}"><p>{{ teacher[2] }}</p></option>
+                <select name="teacher_id">
+                    {% for teacher in teacher_list %}
+                    <option value="{{ teacher[0] }}"><p>{{ teacher[1] }}</p></option>
                     {% endfor %}
                 </select> 
-                <input type="date" name="start_date" id="">
-                <input type="date" name="end_date" id="">
+                <input name="start_date" type="date">
+                <input name="end_date" type="date">
                 <input type="submit" value="Add">
             </form>
         </fieldset>
@@ -55,14 +54,14 @@
         <fieldset>
             <legend>Add Student to Course</legend>
             <form action="/add_student_to_active_course" method="post">
-                <select name="course_id" id="">
-                    {% for course in active_courses %}
-                    <option value="{{ course[0] }}"><p>{{ course[0] }}</p></option>
+                <select name="ac_id">
+                    {% for ac in ac_list %}
+                    <option value="{{ ac[0] }}"><p>{{ ac[1] }} - {{ ac[2] }}</p></option>
                     {% endfor %}
                 </select>
                 <select name="student_id" id="">
-                    {% for student in students %}
-                    <option value="{{ student[0] }}"><p>{{ student[2] }}</p></option>
+                    {% for student in student_list %}
+                    <option value="{{ student[0] }}"><p>{{ student[1] }}</p></option>
                     {% endfor %}
                 </select> 
                 <input type="submit" value="add">
