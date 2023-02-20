@@ -14,7 +14,7 @@ def convert_pic():
 def add_fake_user(role, num):
     users = [(role, fake.email(), fake.password()) for i in range(num)]
     executemany_query("""
-        INSERT INTO user (role_id, email, password)
+        INSERT INTO user (role, email, password)
         VALUES (?, ?, ?)
         """, users)
 
@@ -23,7 +23,7 @@ def add_fake_profile(table, role, num, faker_seed, slice, max, min):
     add_fake_user(role, num)
     Faker.seed(faker_seed)
     m_img, f_img = convert_pic()
-    user_db = execute_query(f"SELECT user_id FROM user WHERE role_id='{role}'")
+    user_db = execute_query(f"SELECT user_id FROM user WHERE role='{role}'")
     user_ids = [int(user_id[0]) for user_id in user_db]
     male_profiles = [
         (user_id, fake.first_name_male(), m_img, "Male",
@@ -97,10 +97,10 @@ def add_studet_to_active_course():
 
 if __name__ == "__main__":
     add_fake_profile(
-        table="student", role=1, num=40, faker_seed=0, slice=15, min=21, max=40
+        table="student", role="Student", num=40, faker_seed=0, slice=15, min=21, max=40
     )
     add_fake_profile(
-        table="teacher", role=2, num=10, faker_seed=1, slice=3, min=35, max=70
+        table="teacher", role="Teacher", num=10, faker_seed=1, slice=3, min=35, max=70
     )
     add_course()
     create_active_course()

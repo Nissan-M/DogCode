@@ -11,9 +11,8 @@
                 <input type="email" name="email" id="" placeholder="Email...">
                 <input type="password" name="password" id="" placeholder="Password...">
                 <select name="role" id="">
-                    {% for role in roles %}
-                    <option value="{{ role[0] }}">{{ role[1] }}</option>
-                    {% endfor %}
+                    <option value="Student">Student</option>
+                    <option value="Teacher">Teacher</option>
                 </select>
                 <input type="submit" value="Enter">
             </form>

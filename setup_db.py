@@ -1,72 +1,74 @@
 import sqlite3
 
 
-with sqlite3.connect("database.db", check_same_thread=False) as conn:
-    cur = conn.cursor()
+DATABASE_NAME = "database.db"
 
 
-def execute_query(schema):
-    cur.execute(schema)
-    conn.commit()
-    return cur.fetchall()
+def execute_query(schema, conn, fetchall=False):
+    cursor = conn.cursor()
+    cursor.execute(schema)
+    if fetchall:
+        return cursor.fetchall()
+    return conn.commit()
 
 
-def executemany_query(schema, value):
-    cur.executemany(schema, value)
-    conn.commit()
-    return cur.fetchall()
+def executemany_query(schema, value, conn):
+    cursor = conn.cursor()
+    cursor.executemany(schema, value)
+    return conn.commit()
 
 
-def create_table():
-    execute_query("""
-        CREATE TABLE IF NOT EXISTS role (
-            role_id             INTEGER     PRIMARY KEY
-          , name                TEXT        NOT NULL        UNIQUE
-        )
-        """)
-    execute_query("""
+def create_tables(conn):
+    create_user_table_query = """
         CREATE TABLE IF NOT EXISTS user (
             user_id             INTEGER     PRIMARY KEY
-          , role_id             INTEGER     NOT NULL
+          , role                TEXT        NOT NULL
           , email               TEXT        NOT NULL        UNIQUE
           , password            TEXT        NOT NULL
-          , FOREIGN KEY (role_id) REFERENCES role (role_id)
         )
-        """)
-    execute_query("""
+        """
+    execute_query(create_user_table_query, conn)
+
+    create_student_table_query = """
         CREATE TABLE IF NOT EXISTS student (
             student_id          INTEGER     PRIMARY KEY
           , user_id             INTEGER     NOT NULL        UNIQUE
           , name                TEXT        NOT NULL
-          , image               BLOB        NOT NULL
-          , gender              TEXT        NOT NULL
-          , birth_date          TEXT        NOT NULL
-          , phone               TEXT        NOT NULL
-          , address             TEXT        NOT NULL
+          , image               BLOB
+          , gender              TEXT
+          , birth_date          DATE
+          , phone               TEXT
+          , address             TEXT
           , FOREIGN KEY (user_id) REFERENCES user (user_id)
         )
-        """)
-    execute_query("""
+        """
+    execute_query(create_student_table_query, conn)
+
+    create_teacher_table_query = """
         CREATE TABLE IF NOT EXISTS teacher (
             teacher_id          INTEGER     PRIMARY KEY
           , user_id             INTEGER     NOT NULL        UNIQUE
           , name                TEXT        NOT NULL
-          , image               BLOB        NOT NULL
-          , gender              TEXT        NOT NULL
-          , birth_date          TEXT        NOT NULL
-          , phone               TEXT        NOT NULL
-          , address             TEXT        NOT NULL
+          , image               BLOB
+          , gender              TEXT
+          , birth_date          DATE
+          , phone               TEXT
+          , address             TEXT
           , FOREIGN KEY (user_id) REFERENCES user (user_id)
         )
-        """)
-    execute_query("""
+        """
+    execute_query(create_teacher_table_query, conn)
+
+    create_course_table_query = """
         CREATE TABLE IF NOT EXISTS course (
             course_id           INTEGER     PRIMARY KEY
           , name                TEXT        NOT NULL        UNIQUE
           , desc                TEXT        NOT NULL
         )
-        """)
-    execute_query("""
+        """
+    execute_query(create_course_table_query, conn)
+
+    create_active_course_table_query = """
         CREATE TABLE IF NOT EXISTS active_course (
             active_course_id    INTEGER     PRIMARY KEY
           , course_id           INTEGER     NOT NULL
@@ -76,8 +78,10 @@ def create_table():
           , FOREIGN KEY (course_id) REFERENCES course (course_id)
           , FOREIGN KEY (teacher_id) REFERENCES teacher (teacher_id)
         )
-        """)
-    execute_query("""
+        """
+    execute_query(create_active_course_table_query, conn)
+
+    create_course_stud_table_query = """
         CREATE TABLE IF NOT EXISTS course_stud (
             course_stud_id      INTEGER     PRIMARY KEY
           , active_course_id    INTEGER     NOT NULL
@@ -86,8 +90,10 @@ def create_table():
           , FOREIGN KEY (active_course_id) REFERENCES active_course (active_course_id)
           , FOREIGN KEY (student_id) REFERENCES student (student_id)
         )
-        """)
-    execute_query("""
+        """
+    execute_query(create_course_stud_table_query, conn)
+
+    create_stud_lead_table_query = """
         CREATE TABLE IF NOT EXISTS stud_lead (
             stud_lead_id        INTEGER     PRIMARY KEY
           , course_id           INTEGER     NOT NULL
@@ -95,28 +101,23 @@ def create_table():
           , FOREIGN KEY (course_id) REFERENCES course (course_id)
           , FOREIGN KEY (student_id) REFERENCES student (student_id)
         )
-        """)
+        """
+    execute_query(create_stud_lead_table_query, conn)
 
 
-def add_roles():
-    role_list = [
-        ("Student", ),
-        ("Teacher", ),
-        ("Admin", ),
-    ]
-    executemany_query("""
-        INSERT INTO role (name) VALUES (?)
-        """, role_list)
-
-
-def add_admin_user():
-    execute_query("""
-        INSERT INTO user (role_id, email, password)
-        VALUES ('3', 'admin@admin.com', 'admin')
-        """)
+def admin_user(conn):
+    create_admin_user_query = """
+        INSERT INTO user (
+            role, email, password
+        ) VALUES (
+            'admin', 'admin@test.com', 'Admin
+        )
+        """
+    execute_query(create_admin_user_query, conn)
 
 
 if __name__ == "__main__":
-    create_table()
-    add_roles()
-    add_admin_user()
+    conn = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
+    create_tables(conn)
+    admin_user(conn)
+    conn.close()
