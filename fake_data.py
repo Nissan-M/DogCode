@@ -1,4 +1,4 @@
-from setup_db import execute_query, executemany_query
+from Models.setup_db import execute_query, executemany_query
 from faker import Faker
 from random import choice, randint
 
@@ -9,6 +9,9 @@ def convert_pic():
     files = ["./images/avatar_male.jpg", "./images/avatar_female.jpg"]
     picture = [open(file, "rb").read() for file in files]
     return picture
+
+
+print
 
 
 def add_fake_user(role, num, faker_seed):
