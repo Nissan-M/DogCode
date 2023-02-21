@@ -5,9 +5,9 @@ DATABASE_NAME = "database.db"
 conn = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
 
 
-def execute_query(schema):
+def execute_query(schema, params=()):
     cursor = conn.cursor()
-    cursor.execute(schema)
+    cursor.execute(schema, params)
     conn.commit()
     return cursor.fetchall()
 
@@ -104,13 +104,26 @@ def create_tables():
         """
     execute_query(create_stud_lead_table_query)
 
+    create_guest_lead_table_query = """
+        CREATE TABLE IF NOT EXISTS lead (
+            lead_id     INTEGER     PRIMARY KEY
+          , name        TEXT        NOT NULL
+          , email       TEXT        NOT NULL
+          , phone       TEXT        NOT NULL
+          , course_id   INTEGER     NOT NULL
+          , date        DATE        NOT NULL
+          , FOREIGN KEY (course_id) REFERENCES course (course_id)
+        )
+        """
+    execute_query(create_guest_lead_table_query)
+
 
 def admin_user():
     create_admin_user_query = """
         INSERT INTO user (
             role, email, password
         ) VALUES (
-            'admin', 'admin@test.com', 'Admin'
+            'Admin', 'admin@admin.com', 'admin'
         )
         """
     execute_query(create_admin_user_query)

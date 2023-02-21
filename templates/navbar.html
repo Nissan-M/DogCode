@@ -1,12 +1,49 @@
 
 <div class="logo">
-  <i class="fa-solid fa-building-columns"></i>
-  <a href="/">Logo</a>
+    <i class="fa-solid fa-building-columns"></i>
+    <a href="/">Logo</a>
 </div>
 <div class="side_nav">
-      <a href="/course"><i class="fa-solid fa-microchip"></i>Courses</a>
-      <a href="/teacher"><i class="fa-solid fa-chalkboard-user"></i>Teachers</a>
-      <a href="/student"><i class="fa-solid fa-graduation-cap"></i>Students</a>
-      <a href="/login"><i class="fa-solid fa-right-to-bracket"></i>Login</a>
-      <a href="/admin"><i class="fa-solid fa-gear"></i>Admin</a>
+    <div class="nav_item_1">
+        <form action="/search" method="GET">
+            <br>
+            <div class="search_item_1">
+                <input type="text" name="search" class="search" placeholder="name">
+
+            </div>
+            <br>
+            <div class="search_item_4">
+                <input type="checkbox" name="course" id="course" value="nn">
+                <label for="course">Courses</label>
+            </div>
+            <div class="search_item_2">
+                <input type="checkbox" name="teacher" id="teacher">
+                <label for="teacher">Teacher</label>
+            </div>
+            <div class="search_item_3">
+                <input type="checkbox" name="studet" id="student">
+                <label for="student">Student</label>
+            </div>
+        </form>
+    </div>
+    <div class="nav_item_2">   
+        <i class="fa-solid fa-microchip"></i>         
+        <a href="/course">Courses</a>
+    </div>
+    <div class="nav_item_3">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <a href="/teacher">Teachers</a>
+    </div>
+    <div class="nav_item_4">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <a href="/student">Students</a>
+    </div>
+    <div class="nav_item_5">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <a href="/login"></i>Login</a>
+    </div>
+    <div class="nav_item_6">
+        <i class="fa-solid fa-gear"></i>
+        <a href="/admin">Admin</a>
+    </div>
 </div>

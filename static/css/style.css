@@ -4,7 +4,6 @@
     font-family: serif;
 }
 
-
 .background {
     background-color: #F4F5F8;
     position: fixed;
@@ -48,25 +47,111 @@
     grid-column-end: col2;
     grid-row-start: row2;
     grid-row-end: end;
-    display: flex;
-    flex-direction: column;
-    padding: 50px 0;
-    gap: 5%;
+    display: grid;
+    grid-template-rows: [r1] 10% [r2] 10% [r3] 10% [r4] 10% [r5] 10% [r6] 10% [r7] 10% [r8] 10% [r9] 10% [r10] 10% [end];    
     background-color: #333A45;
 }
 
+.nav_item_1 {
+    grid-row-start: r1;
+    grid-row-end: r3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10px;
+}
 
-.side_nav > a {
+input[class="search"] {
+    width: 90%;
+}
+
+.nav_item_2 {
+    grid-row-start: r3;
+    grid-row-end: r4;
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 0 10px;
-    gap: 10%;
+    gap: 15px;
+}
+
+.nav_item_2 > a {
+    text-decoration: none;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav_item_3 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    gap: 15px;
+}
+
+.nav_item_3 > a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav_item_4 {
+    grid-row-start: r5;
+    grid-row-end: r6;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    gap: 15px;
+}
+
+.nav_item_4 > a {
+    text-decoration: none;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav_item_5 {
+    grid-row-start: r6;
+    grid-row-end: r7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    gap: 15px;
+}
+
+.nav_item_5 > a {
+    text-decoration: none;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav_item_6 {
+    grid-row-start: r7;
+    grid-row-end: r8;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    gap: 15px;
+}
+
+.nav_item_6 > a {
+    text-decoration: none;
+    text-decoration: none;
+    color: #fff;
+}
+
+.side_nav > * {
     text-decoration: none;
     font-size: 100%;
     font-weight: 500;
     color: #fff;
 }
+
+
 
 .side_nav > a:hover {
     color: #FFA500;

@@ -2,5 +2,28 @@
 {% block title %}Home Page{% endblock %}
 {% block content %}
 {% include 'navbar.html' %}
-<h1>Home Page</h1>
+<div class="section_guest">
+    <form class="lint_con">
+        <div class="fild_item_1">
+            <input name="name" type="text" placeholder="Full Name">
+        </div>
+        <div class="fild_item_1">
+            <input name="course_id" type="text">
+            <select name="course_id">
+                {% for course in courses %}
+                <option value="{{ course[0] }}">{{ course[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="fild_item_1">
+            <input name="phone" type="text" placeholder="Phone Number">
+        </div>
+        <div class="fild_item_1">
+            <input name="email" type="email" placeholder="Email">
+        </div>
+        <div class="fild_item_1">
+            <input type="submit" value="Leave details">
+        </div>
+    </form>
+</div>
 {% endblock %}
