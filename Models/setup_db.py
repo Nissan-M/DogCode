@@ -5,9 +5,11 @@ DATABASE_NAME = "database.db"
 conn = sqlite3.connect(DATABASE_NAME, check_same_thread=False)
 
 
-def execute_query(schema, params=()):
+def execute_query(schema, params=None):
     cursor = conn.cursor()
-    cursor.execute(schema, params)
+    if params:
+        cursor.execute(schema, params)
+    cursor.execute(schema)
     conn.commit()
     return cursor.fetchall()
 
@@ -70,7 +72,7 @@ def create_tables():
 
     create_active_course_table_query = """
         CREATE TABLE IF NOT EXISTS ac (
-            ac_id    INTEGER     PRIMARY KEY
+            ac_id       INTEGER     PRIMARY KEY
           , course_id   INTEGER     NOT NULL
           , teacher_id  INTEGER     NOT NULL
           , start_date  DATE        NOT NULL
