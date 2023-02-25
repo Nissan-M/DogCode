@@ -8,35 +8,25 @@ app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
-# @app.before_request
-# def auth():
-#     if "role" not in session.keys():
-#         session["role"] = "anonymous"
-#         session["username"] = "anonymous"
+@app.before_request
+def auth():
+    if "role" not in session.keys():
+        session["role"] = "anonymous"
+        session["username"] = "anonymous"
 
-#     elif session["role"] != "Admin":
-#         if '/admin' in request.full_path:
-#             return abort(403, 'You do not have permissions')
+    # elif session["role"] != "Admin":
+    #     if '/admin' in request.full_path:
+    #         return abort(403, 'You do not have permissions')
 
-#     elif session["role"] != "Student":
-#         pass
+    # elif session["role"] != "Student":
+    #     pass
 
-#     elif session["role"] != "Teacher":
-#         pass
-
+    # elif session["role"] != "Teacher":
+    #     pass
 
 @app.route('/')
 def index():
     return render_template("home.html")
-
-    ##  guest register info
-# @app.route('/registration_details', methods="POST")
-# def registration_details():
-#     name = request.form["name"]
-#     course_id = request.form["course_id"]
-#     date = ""
-#     phone = request.form[""]
-#     return redirect(url_for("index"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -58,6 +48,21 @@ def login():
         return render_template('home.html')
 
     return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+    ##  guest register info
+# @app.route('/registration_details', methods="POST")
+# def registration_details():
+#     name = request.form["name"]
+#     course_id = request.form["course_id"]
+#     date = ""
+#     phone = request.form[""]
+#     return redirect(url_for("index"))
+
 
 
 @app.route('/admin')

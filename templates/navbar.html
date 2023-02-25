@@ -1,18 +1,13 @@
+<div class="navbar">
 
-<div class="logo">
-    <i class="fa-solid fa-building-columns"></i>
-    <a href="/">Logo</a>
-</div>
-<div class="side_nav">
-    <div class="nav_item_1">
-        <form action="/search" method="GET">
-            <br>
-            <div class="search_item_1">
-                <input type="text" name="search" class="search" placeholder="name">
+    <div class="logo">
+        <a href="/">Logo</a>
+    </div>
 
-            </div>
-            <br>
-            <!-- <div class="search_item_4">
+    <form class="nav_search" action="/search">
+        <input class="inp_search" type="text" name="search" placeholder="name">
+        <div class="search_checkbox">
+            <div class="search_item_4">
                 <input type="checkbox" name="course" id="course" value="nn">
                 <label for="course">Courses</label>
             </div>
@@ -23,27 +18,31 @@
             <div class="search_item_3">
                 <input type="checkbox" name="studet" id="student">
                 <label for="student">Student</label>
-            </div> -->
-        </form>
+            </div>
+        </div>
+    </form>
+
+    <div class="nav_links">
+        {% if session["role"] == "Student"%}
+        <a href="" class="nav_link">Profile</a>
+        {% elif session["role"] == "Teacher"%}
+        <a href="" class="nav_link">Profile</a>
+        {% elif session["role"] == "Admin"%}
+        <a href="" class="nav_link">Control Panel</a>
+        {% endif %}
+        <a href="" class="nav_link">Courses</a>
+        <a href="" class="nav_link">Teachers</a>
+        <a href="" class="nav_link">Students</a>
     </div>
-    <div class="nav_item_2">   
-        <i class="fa-solid fa-microchip"></i>         
-        <a href="/course">Courses</a>
+    
+    <div class="nav_login">
+        <div class="login">
+            {% if session["role"] == "anonymous"%}
+            <a href="/login">login</a>
+            {% else %}
+            <a href="/logout">Logout</a>
+            {% endif %}
+        </div>
     </div>
-    <div class="nav_item_3">
-        <i class="fa-solid fa-chalkboard-user"></i>
-        <a href="/teacher">Teachers</a>
-    </div>
-    <div class="nav_item_4">
-        <i class="fa-solid fa-graduation-cap"></i>
-        <a href="/student">Students</a>
-    </div>
-    <div class="nav_item_5">
-        <i class="fa-solid fa-right-to-bracket"></i>
-        <a href="/login"></i>Login</a>
-    </div>
-    <div class="nav_item_6">
-        <i class="fa-solid fa-gear"></i>
-        <a href="/admin">Admin</a>
-    </div>
+
 </div>
