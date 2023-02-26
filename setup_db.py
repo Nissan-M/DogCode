@@ -71,7 +71,7 @@ def create_tables():
     execute_query(create_course_table_query)
 
     create_active_course_table_query = """
-        CREATE TABLE IF NOT EXISTS ac (
+        CREATE TABLE IF NOT EXISTS active_course (
             ac_id       INTEGER     PRIMARY KEY
           , course_id   INTEGER     NOT NULL
           , teacher_id  INTEGER     NOT NULL
@@ -84,20 +84,20 @@ def create_tables():
     execute_query(create_active_course_table_query)
 
     create_course_stud_table_query = """
-        CREATE TABLE IF NOT EXISTS ac_stud (
-            ac_stud_id  INTEGER     PRIMARY KEY
+        CREATE TABLE IF NOT EXISTS active_course_student (
+            acs_id  INTEGER     PRIMARY KEY
           , ac_id       INTEGER     NOT NULL
           , student_id  INTEGER     NOT NULL
           , grade       INTEGER
-          , FOREIGN KEY (ac_id) REFERENCES ac (ac_id)
+          , FOREIGN KEY (ac_id) REFERENCES active_course (ac_id)
           , FOREIGN KEY (student_id) REFERENCES student (student_id)
         )
         """
     execute_query(create_course_stud_table_query)
 
     create_stud_lead_table_query = """
-        CREATE TABLE IF NOT EXISTS sl (
-            sl_id       INTEGER     PRIMARY KEY
+        CREATE TABLE IF NOT EXISTS student_register (
+            sr_id       INTEGER     PRIMARY KEY
           , course_id   INTEGER     NOT NULL
           , student_id  INTEGER     NOT NULL
           , FOREIGN KEY (course_id) REFERENCES course (course_id)
@@ -106,18 +106,17 @@ def create_tables():
         """
     execute_query(create_stud_lead_table_query)
 
-    create_guest_lead_table_query = """
-        CREATE TABLE IF NOT EXISTS lead (
-            lead_id     INTEGER     PRIMARY KEY
-          , name        TEXT        NOT NULL
-          , email       TEXT        NOT NULL
-          , phone       TEXT        NOT NULL
+    create_register_table_query = """
+        CREATE TABLE IF NOT EXISTS register (
+            retuster_id INTEGER     PRIMARY KEY
           , course_id   INTEGER     NOT NULL
-          , date        DATE        NOT NULL
+          , name        TEXT        NOT NULL
+          , phone       TEXT        NOT NULL
+          , email       TEXT        NOT NULL
           , FOREIGN KEY (course_id) REFERENCES course (course_id)
         )
         """
-    execute_query(create_guest_lead_table_query)
+    execute_query(create_register_table_query)
 
 
 def admin_user():

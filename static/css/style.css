@@ -15,21 +15,21 @@
 .main {
     position: fixed;
     display: grid;
-    grid-template-columns:[y1] 10px [start] auto [end] 10px [y2];
-    grid-template-rows: [nav1] 75px [nav2] 74px [nav3] 2vh [r1] auto [end];
+    grid-template-columns:[x1] 50% [x2] 50% [x3];
+    grid-template-rows: [y1] 75px [y2] 455px [y3] auto [y4];
     width: 100%;
     height: 100%;
 }
 /* ----------NAV-BAR---------- */
 
 .navbar {
-    grid-column-start: y1;
-    grid-column-end: y2;
-    grid-row-start: nav1;
-    grid-row-end: nav2;
+    grid-column-start: x1;
+    grid-column-end: x3;
+    grid-row-start: y1;
+    grid-row-end: y2;
     display: grid;
     grid-template-columns: [c1] 200px [c2] 400px [c3] auto [c4] 200px [end];
-    background-color: #F5C347;
+    background-color: #FFBF00;
     border: 1px solid black;
 }
 
@@ -65,10 +65,14 @@
     height: 32px;
     padding: 0 15px;
     font-size: 22px;
-    color: #5E6472;
+    color: black;
     outline: none;
     border: 1px solid black; 
     border-radius: 10px;
+}
+
+.inp_search::placeholder {
+    color: black;
 }
 
 .search_checkbox {
@@ -101,32 +105,163 @@
     font-size: 140%;
 }
 
+.login > a:hover {
+    color: #ffce3b;   
+}
+
 .nav_links {
     display: flex;
     flex-direction: row-reverse;
     gap: 25px;
     align-items: center;
 }
+
 .nav_link {
     text-decoration: none;
     color: black;
     font-size: 135%;
 }
 
+.nav_link:hover {
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
+}
 /* ----------END---------- */
 
+/* ----------REGISTER---------- */
+
+.section_register {
+    grid-column-start: x1;
+    grid-column-end: x3;
+    grid-row-start: y2;
+    grid-row-end: y3;
+
+    display: grid;
+    grid-template-columns: [c1] 25% [c2] 75% [c3];
+    background-color: #FFBF00;
+    border: 1px solid black;    
+    border-top: none;
+}
+
+.con_register {
+    grid-column-start: c1;
+    grid-column-end: c2;
+
+    display: grid;
+    grid-template-rows: [r1] 27% [r2] 14% [r3] 14% [r4] 14% [r5] 14% [r6] 14% [r7] 3% [R8];
+}
+
+.register_header {
+    grid-row-start: r1;
+    grid-row-end: r2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.register_field_1,
+.register_field_2,
+.register_field_3,
+.register_field_4,
+.register_field_5 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register_field_1 {
+    grid-row-start: r2;
+    grid-row-end: r3;
+}
+
+.register_field_2 {
+    grid-row-start: r3;
+    grid-row-end: r4;
+}
+
+.register_field_3 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+}
+
+.register_field_4 {
+    grid-row-start: r5;
+    grid-row-end: r6;
+}
+
+.register_field_5 {
+    grid-row-start: r6;
+    grid-row-end: r7;
+}
+
+.inp_register {
+    width: 180px;
+    height: 28px;
+    padding: 0 15px;
+    font-size: 22px;
+    color: black;
+    outline: none;
+    border: 1px solid black; 
+    border-radius: 10px;
+}
+
+.inp_register::placeholder{
+    color: black;
+}
+
+.btn_register {
+    padding: 5px 0;
+    width: 215px;
+    background-color: black;
+    border: none;
+    border-radius: 15px;
+    color: #ffffff;
+    font-size: 150%;
+}
+
+.btn_register:hover {
+    box-shadow: none;
+    color: #ffce3b;
+}
+/* ----------END---------- */
+
+/* ----------CONTENT---------- */
+
+.con_content {
+    grid-column-start: c2;
+    grid-column-end: c3; 
+    display: grid;
+    grid-template-rows: [r1] 28% [r2] 72% [r3];
+}
+
+.content_header {
+    grid-row-start: r1;
+    grid-row-end: r2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content_inner {
+    grid-row-start: r2;
+    grid-row-end: r3;
+    display: flex;
+    justify-content: center;
+}
+/* ----------END---------- */
 
 /* ----------LOGIN---------- */
 .section_login {
-    grid-column-start: y1;
-    grid-column-end: y2;
-    grid-row-start: nav1;
-    grid-row-end: end;
+    grid-column-start: x1;
+    grid-column-end: x3;
+    grid-row-start: y1;
+    grid-row-end: y4;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #F5C347;
+    background-color: #FFBF00;
 }
 
 .login_con {
@@ -138,6 +273,7 @@
     border: 1px solid black;
     border-radius: 10px;
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.10);
 
 }
 
@@ -220,7 +356,7 @@
     width: max-content;
     padding: 4px 30px;
     height: 40px;
-    color: #F5C347;
+    color: #ffffff;
     background-color: black;
     font-size: 150%;
     border-radius: 20px;
@@ -237,17 +373,17 @@
 
 .btn-login:hover {
     box-shadow: none;
-    color: #ffffff;
+    color: #FFBF00;
 }
 
 /* ----------END---------- */
 
 /* ----------ADMIN---------- */
 .section_admin {
-    grid-column-start: col3;
-    grid-column-end: col4;
-    grid-row-start: row2;
-    grid-row-end: end;
+    grid-column-start: x1;
+    grid-column-end: x3;
+    grid-row-start: y2;
+    grid-row-end: y4;
 
     display: grid;
     grid-template-rows: [r1]20%[r2]20%[r3]20%[r4]20%[r5];

@@ -5,7 +5,7 @@
     </div>
 
     <form class="nav_search" action="/search">
-        <input class="inp_search" type="text" name="search" placeholder="name">
+        <input class="inp_search" type="text" name="search" placeholder="Search...">
         <div class="search_checkbox">
             <div class="search_item_4">
                 <input type="checkbox" name="course" id="course" value="nn">
@@ -28,9 +28,9 @@
         {% elif session["role"] == "Teacher"%}
         <a href="" class="nav_link">Profile</a>
         {% elif session["role"] == "Admin"%}
-        <a href="" class="nav_link">Control Panel</a>
+        <a href="/control_panel" class="nav_link">Control Panel</a>
         {% endif %}
-        <a href="" class="nav_link">Courses</a>
+        <a href="/courses" class="nav_link">Courses</a>
         <a href="" class="nav_link">Teachers</a>
         <a href="" class="nav_link">Students</a>
     </div>

@@ -115,3 +115,28 @@ connections :
             student_card
     
 
+improvments : 
+
+    admin - control Panel
+        html, css
+        routes
+
+todo : 
+
+    course list
+        html, css, route
+
+    profile for courses
+        html, css, route
+    
+    teacher list
+        html, css, route
+    
+    profile for teacher
+        html, css, route
+
+    student list
+        html, css, route
+
+    profile for student
+        html, css, route

@@ -1,4 +1,4 @@
-from Models.setup_db import execute_query, executemany_query
+from setup_db import execute_query, executemany_query
 from faker import Faker
 from random import choice, randint
 
@@ -75,7 +75,7 @@ def create_active_course():
         for teacher in teacher_ids
     ]
     executemany_query("""
-        INSERT INTO ac (
+        INSERT INTO active_course (
             teacher_id, course_id, start_date, end_date
         )
         VALUES (?, ?, ?, ?)
@@ -85,14 +85,14 @@ def create_active_course():
 def add_studet_to_active_course():
     student_db = execute_query("SELECT student_id FROM student")
     student_ids = [student[0] for student in student_db]
-    courseNo_db = execute_query("SELECT ac_id FROM ac")
+    courseNo_db = execute_query("SELECT ac_id FROM active_course")
     courseNo_ids = [course[0] for course in courseNo_db]
     student_course_ids = [
         (teacher, choice(courseNo_ids), randint(70, 100))
         for teacher in student_ids
     ]
     executemany_query("""
-        INSERT INTO ac_stud (
+        INSERT INTO active_course_student (
             student_id, ac_id, grade
         )
         VALUES (?, ?, ?)

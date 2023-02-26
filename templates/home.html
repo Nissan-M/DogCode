@@ -2,28 +2,53 @@
 {% block title %}Home Page{% endblock %}
 {% block content %}
 {% include 'navbar.html' %}
-<div class="section_guest">
-    <form class="lint_con">
-        <div class="fild_item_1">
-            <input name="name" type="text" placeholder="Full Name">
+<div class="section_register">
+    <form class="con_register" action="/register" method="POST">
+        <div class="register_header">
+            <p style="font-size: 300%; font-weight: 700;">Join us</p>
+            <p style="font-size: 135%;">leave your details below</p>
         </div>
-        <div class="fild_item_1">
-            <input name="course_id" type="text">
-            <select name="course_id">
-                {% for course in courses %}
-                <option value="{{ course[0] }}">{{ course[1] }}</option>
-                {% endfor %}
+        <div class="register_field_1">
+            <input class="inp_register" name="name" type="text" placeholder="Name">
+        </div>
+        <div class="register_field_2">
+            <select class="inp_register" name="course_id" style="width: 215px; height: 31px;">
+                <option hidden>Course</option>
+            {% for course in courses %}
+                <option value="{{ course[0][0] }}">{{ course[1] }}</option>
+            {% endfor %}
             </select>
         </div>
-        <div class="fild_item_1">
-            <input name="phone" type="text" placeholder="Phone Number">
+        <div class="register_field_3">
+            <input class="inp_register" name="phone" type="text" placeholder="Phone">
         </div>
-        <div class="fild_item_1">
-            <input name="email" type="email" placeholder="Email">
+        <div class="register_field_4">
+            <input class="inp_register" name="email" type="text" placeholder="Email">
         </div>
-        <div class="fild_item_1">
-            <input type="submit" value="Leave details">
+        <div class="register_field_5">
+            <input class="btn_register" type="submit" value="Leave Details">
         </div>
     </form>
+    <div class="con_content">
+        <div class="content_header">
+            <p style="font-size: 500%; font-weight: 700;">Logo</p>
+        </div>
+        <div class="content_inner">
+            <div class="content_text">
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;"Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

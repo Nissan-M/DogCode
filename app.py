@@ -1,7 +1,6 @@
-from Models.setup_db import execute_query
+from setup_db import execute_query
 from flask import (Flask, render_template, redirect, url_for, request,
                    session, abort)
-import base64
 
 
 app = Flask(__name__)
@@ -14,19 +13,47 @@ def auth():
         session["role"] = "anonymous"
         session["username"] = "anonymous"
 
-    # elif session["role"] != "Admin":
-    #     if '/admin' in request.full_path:
-    #         return abort(403, 'You do not have permissions')
+    elif session["role"] != "Admin":
+        if '/admin' in request.full_path:
+            return abort(403, 'You do not have permissions')
 
-    # elif session["role"] != "Student":
-    #     pass
+    elif session["role"] != "Student":
+        pass
 
-    # elif session["role"] != "Teacher":
-    #     pass
+    elif session["role"] != "Teacher":
+        pass
+
 
 @app.route('/')
 def index():
-    return render_template("home.html")
+    query = """
+        SELECT course_id, name FROM course
+        """
+    courses = execute_query(query)
+    return render_template("home.html", courses=courses)
+
+
+@app.route('/register', methods=["POST"])
+def register():
+    name = request.form["name"]
+    course_id = request.form["course_id"]
+    phone = request.form["phone"]
+    email = request.form["email"]
+    query = f"""
+        INSERT INTO register (
+            course_id,
+            name,
+            phone,
+            email
+        ) VALUES (
+            {course_id}
+            '{name}',
+            '{phone}',
+            '{email}'
+        )
+        """
+    execute_query(query)
+    return redirect(url_for("index"))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -54,19 +81,10 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("login"))
-    ##  guest register info
-# @app.route('/registration_details', methods="POST")
-# def registration_details():
-#     name = request.form["name"]
-#     course_id = request.form["course_id"]
-#     date = ""
-#     phone = request.form[""]
-#     return redirect(url_for("index"))
 
 
-
-@app.route('/admin')
-def admin():
+@app.route('/control_panel')
+def control_panel():
     teacher_list = execute_query("""
         SELECT teacher_id, name FROM teacher
     """)
@@ -77,9 +95,9 @@ def admin():
         SELECT student_id, name FROM student
     """)
     ac_list = execute_query("""
-        SELECT ac_id, course.name, teacher.name FROM ac
-        JOIN course ON ac.course_id=course.course_id
-        JOIN teacher ON ac.teacher_id=teacher.teacher_id
+        SELECT ac_id, course.name, teacher.name FROM active_course
+        JOIN course ON active_course.course_id=course.course_id
+        JOIN teacher ON active_course.teacher_id=teacher.teacher_id
     """)
 
     return render_template("admin.html", teacher_list=teacher_list,
@@ -113,7 +131,7 @@ def create_new_user():
         )
     """)
 
-    return redirect(url_for("admin"))
+    return redirect(url_for("control_panel"))
 
 
 @app.route('/create_new_course', methods=["POST"])
@@ -129,7 +147,7 @@ def create_new_course():
         )
     """)
 
-    return redirect(url_for("admin"))
+    return redirect(url_for("control_panel"))
 
 
 @app.route('/create_active_course', methods=["POST"])
@@ -146,7 +164,7 @@ def create_active_course():
         )
     """)
 
-    return redirect(url_for("admin"))
+    return redirect(url_for("control_panel"))
 
 
 @app.route('/add_student_to_active_course', methods=["POST"])
@@ -160,47 +178,48 @@ def method_name():
             '{student_id}', '{ac_id}'
         )
     """)
-    return redirect(url_for("admin"))
+    return redirect(url_for("control_panel"))
 
 
-@app.route('/profile', methods=["GET", "POST"])
-def profile():
-    user_id = int(session["id"])
-    stud_id = execute_query(f"""
-        SELECT student_id FROM student
-        JOIN user ON student.user_id = user.user_id
-        WHERE student.user_id={user_id}
-        """)
+# NEED IMPROVMENTS :
+# @app.route('/profile', methods=["GET", "POST"])
+# def profile():
+#     user_id = int(session["id"])
+#     stud_id = execute_query(f"""
+#         SELECT student_id FROM student
+#         JOIN user ON student.user_id = user.user_id
+#         WHERE student.user_id={user_id}
+#         """)
 
-    if request.method == "POST":
-        name = request.form["name"]
-        image = request.files["image"]
-        blob_image = base64.b64encode(image.read())
-        print(blob_image)
-        gender = request.form["gender"]
-        birth_date = request.form["date"]
-        phone = request.form["phone"]
-        address = request.form["address"]
-        execute_query(f"""
-            UPDATE student SET
-                name = ?,
-                image = ?,
-                gender = ?,
-                birth_date = ?,
-                phone = ?,
-                address = ?
-            WHERE user_id = {user_id}
-        """, params=(name, blob_image, gender, birth_date, phone, address))
+#     if request.method == "POST":
+#         name = request.form["name"]
+#         image = request.files["image"]
+#         blob_image = base64.b64encode(image.read())
+#         print(blob_image)
+#         gender = request.form["gender"]
+#         birth_date = request.form["date"]
+#         phone = request.form["phone"]
+#         address = request.form["address"]
+#         execute_query(f"""
+#             UPDATE student SET
+#                 name = ?,
+#                 image = ?,
+#                 gender = ?,
+#                 birth_date = ?,
+#                 phone = ?,
+#                 address = ?
+#             WHERE user_id = {user_id}
+#         """, params=(name, blob_image, gender, birth_date, phone, address))
 
-        return redirect(url_for("profile"))
+#         return redirect(url_for("profile"))
 
-    student_info = execute_query(f"""
-        SELECT * FROM user
-        JOIN student ON user.user_id = student.user_id
-        WHERE user.user_id = {user_id}
-    """)
+    # student_info = execute_query(f"""
+    #     SELECT * FROM user
+    #     JOIN student ON user.user_id = student.user_id
+    #     WHERE user.user_id = {user_id}
+    # """)
 
-    return render_template("profile.html", student_info=student_info)
+    # return render_template("profile.html", student_info=student_info)
 
 
 @app.route('/course')
