@@ -100,14 +100,14 @@ def add_studet_to_active_course():
 
 
 if __name__ == "__main__":
-    add_fake_profile(
-        table="student", role="Student", num=40,
-        faker_seed=0, slice=15, min=21, max=40
-    )
-    add_fake_profile(
-        table="teacher", role="Teacher", num=10,
-        faker_seed=1, slice=3, min=35, max=70
-    )
-    add_course()
+    # add_fake_profile(
+    #     table="student", role="Student", num=40,
+    #     faker_seed=0, slice=15, min=21, max=40
+    # )
+    # add_fake_profile(
+    #     table="teacher", role="Teacher", num=10,
+    #     faker_seed=1, slice=3, min=35, max=70
+    # )
+    # add_course()
     create_active_course()
     add_studet_to_active_course()

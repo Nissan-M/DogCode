@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Admin{% endblock %} {% block content
+%} {% include 'navbar.html' %}
+<div class="section_work_place">
+
+  <div class="todo_con">
+    <h1>TODO List</h1>
+  </div>
+
+  <div class="teacher_work_place_header">
+    <h1>Hi {{ teacher_name }}</h1>
+  </div>
+
+  <div class="teacher_actions">
+
+    <div class="student_grade_field">
+      <div class="student_grade_header">
+        <h1>Add student grade field:</h1>
+      </div>
+
+      <form class="teacher_courses_form" method="post">
+        <select class="teacher_course_name" name="active_course_id" id="">
+          <option hidden>course</option>
+          {% for course in courses %}
+          <option value="{{ course[0] }}">
+            {{ course[1] }} - {{ course[0] }}
+          </option>
+          {% endfor %}
+        </select>
+        <input class="btn_teacher_course" type="submit" value="View" />
+      </form>
+
+      {% for student in students %}
+      <form
+        class="student_grade_form"
+        action="/add_student_grade"
+        method="post"
+      >
+        <div class="student_grade_name">{{ student[3] }} :</div>
+        <input type="text" name="student_id" value="{{ student[2] }}" hidden />
+        <input
+          class="inp_student_grade"
+          name="grade"
+          type="number"
+          value="{{ student[1] }}"
+          maxlength="3"
+          min="0"
+          max="100"
+        />
+        <input class="btn_student_grade" type="submit" value="Add Grade" />
+      </form>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

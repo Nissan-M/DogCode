@@ -108,7 +108,7 @@ def create_tables():
 
     create_register_table_query = """
         CREATE TABLE IF NOT EXISTS register (
-            retuster_id INTEGER     PRIMARY KEY
+            register_id INTEGER     PRIMARY KEY
           , course_id   INTEGER     NOT NULL
           , name        TEXT        NOT NULL
           , phone       TEXT        NOT NULL

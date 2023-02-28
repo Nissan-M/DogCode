@@ -1,3 +1,5 @@
+
+
 * {
     margin: 0;
     padding: 0;
@@ -19,6 +21,7 @@
     grid-template-rows: [y1] 75px [y2] 455px [y3] auto [y4];
     width: 100%;
     height: 100%;
+    overflow: scroll;
 }
 /* ----------NAV-BAR---------- */
 
@@ -136,7 +139,7 @@
     grid-row-end: y3;
 
     display: grid;
-    grid-template-columns: [c1] 25% [c2] 75% [c3];
+    grid-template-columns: [c1] 600px [c2] auto [c3];
     background-color: #FFBF00;
     border: 1px solid black;    
     border-top: none;
@@ -306,7 +309,6 @@
     grid-column-end: c3;
     grid-row-start: r3;
     grid-row-end: r4;
-
 }
 
 .form_field_2 {
@@ -386,49 +388,216 @@
     grid-row-end: y4;
 
     display: grid;
-    grid-template-rows: [r1]20%[r2]20%[r3]20%[r4]20%[r5];
+    grid-template-rows: [r1] 45px [r2] 410px [r3];
 }
 
-.con_1 {
+.admin_navbar {
     grid-row-start: r1;
     grid-row-end: r2;
+
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding-right: 250px;
+    gap: 25px;
+
+    background-color: black;
 }
 
-.con_2 {
+.admin_link {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 135%;
+}
+
+.admin_link:hover {
+    color: #FFBF00;
+}
+
+.admin_todo {
     grid-row-start: r2;
     grid-row-end: r3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #FFBF00;
+    border: 1px solid black;
 }
 
-.con_3 {
+.admin_inner {
     grid-row-start: r3;
     grid-row-end: r4;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: [c1] 50% [c2] 50% [c3];
 }
 
-.con_4 {
-    grid-row-start: r4;
-    grid-row-end: r5;
+.admin_con_1 {
+    grid-column-start: c1;
+    grid-column-end: c2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 2px solid #babcc2;
+}
+
+.admin_con_2 {
+    grid-column-start: c2;
+    grid-column-end: c3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin_user {
+    width: 100%;
+    height: 100%;
+    display: grid;
 }
 
 /* ----------END---------- */
 
-/* ----------PROFILE---------- */
+/* ----------WORK-PLACE---------- */
 
-.section_profile {
-    grid-column-start: col3;
-    grid-column-end: col4;
-    grid-row-start: row2;
-    grid-row-end: end;
+.section_work_place {
+    grid-column-start: x1;
+    grid-column-end: x3;
+    grid-row-start: y2;
+    grid-row-end: y4;
 
-}
-
-.student_con {
-    width: 100%;
-    height: 100%;
     display: grid;
-    
+    grid-template-columns:[c1] 50% [c2] 50% [c3];
+    grid-template-rows: [r1] 455px [r2] 125px [r3] auto [r4];
 }
 
-.student_con > .field_item {
-    background-color: red;
-    width: 100%;
+.todo_con {
+    grid-column-start: c1;
+    grid-column-end: c3;
+    grid-row-start: r1;
+    grid-row-end: r2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #FFBF00;
+    border: 1px solid black;
 }
+
+.teacher_work_place_header{
+    grid-column-start: c1;
+    grid-column-end: c3;
+    grid-row-start: r2;
+    grid-row-end: r3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ----------END---------- */
+
+/* -----------TEACHER---------- */
+
+
+.teacher_action_header{
+    grid-row-start: r3;
+    grid-row-end: r4;
+}
+
+.student_grade_field {
+    grid-column-start: c1;
+    grid-column-end: c3;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 25px 200px;
+}
+
+.teacher_courses_form {
+    display: grid;
+    grid-template-columns: [c1] 180px [c2] 145px [c3];
+    padding: 25px 8px;
+}
+
+.teacher_course_name{
+    grid-column-start: c1;
+    grid-column-end: c2;
+
+    width: 140px;
+    padding: 1px 3px;
+    font-size: 115%;
+    border-radius: 10px;
+}
+
+.btn_teacher_course {
+    grid-column-start: c2;
+    grid-column-end: c3;
+
+    width: max-content;
+    padding: 4px 22px;
+    background-color: black;
+    color: #ffffff;
+    font-size: 125%;
+    border-radius: 20px;
+    border: none;
+}
+
+.student_grade_form {
+    display: grid;
+    grid-template-columns: [c1] 180px [c2] 80px [c3] 145px [c4];
+    border-bottom: 1px solid #3e403f;
+    padding-top: 15px;
+    padding-bottom: 4px;
+    gap: 15px;
+}
+
+.student_grade_name {
+    grid-column-start: c1;
+    grid-column-end: c2;
+    
+    padding-left: 8px;
+    font-size: 125%;
+
+}
+
+.inp_student_grade {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    font-size: 125%;
+    width: 55px;
+    height: max-content;
+}
+
+.btn_student_grade {
+    grid-column-start: c3;
+    grid-column-end: c4;
+
+    width: max-content;
+    padding: 4px 22px;
+    background-color: black;
+    color: #ffffff;
+    font-size: 125%;
+    border-radius: 20px;
+    border: none;
+
+}
+.student_message_field {
+    grid-column-start: c2;
+    grid-column-end: c3;
+    grid-row-start: r2;
+    grid-row-end: r3;
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+/* ----------END---------- */

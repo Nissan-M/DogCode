@@ -29,6 +29,7 @@
             <input class="btn_register" type="submit" value="Leave Details">
         </div>
     </form>
+
     <div class="con_content">
         <div class="content_header">
             <p style="font-size: 500%; font-weight: 700;">Logo</p>
@@ -43,12 +44,18 @@
                 <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
                 <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
                 <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
-                <p style="font-size: 135%;"Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+                <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
                 <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
                 <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
                 <p style="font-size: 135%;">Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
             </div>
         </div>
     </div>
+</div>
+
+<div class="home_inner">
+    {% for course in new_courses %}
+    <p>{{ course }}</p>
+    {% endfor %}
 </div>
 {% endblock %}

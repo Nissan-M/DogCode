@@ -1,6 +1,6 @@
 from setup_db import execute_query
 from flask import (Flask, render_template, redirect, url_for, request,
-                   session, abort)
+                   session)
 
 
 app = Flask(__name__)
@@ -14,8 +14,10 @@ def auth():
         session["username"] = "anonymous"
 
     elif session["role"] != "Admin":
-        if '/admin' in request.full_path:
-            return abort(403, 'You do not have permissions')
+        if '/control_panel' in request.full_path:
+            message = "You do not have permissions"
+
+            return render_template('login.html', message=message)
 
     elif session["role"] != "Student":
         pass
@@ -26,11 +28,18 @@ def auth():
 
 @app.route('/')
 def index():
-    query = """
+    get_courses_query = """
         SELECT course_id, name FROM course
-        """
-    courses = execute_query(query)
-    return render_template("home.html", courses=courses)
+    """
+    courses = execute_query(get_courses_query)
+
+    get_top_5_courses_query = """
+        SELECT name FROM course ORDER BY course_id DESC LIMIT 5
+    """
+    top_5_courses = execute_query(get_top_5_courses_query)
+
+    return render_template("home.html", courses=courses,
+                           new_courses=top_5_courses)
 
 
 @app.route('/register', methods=["POST"])
@@ -39,6 +48,7 @@ def register():
     course_id = request.form["course_id"]
     phone = request.form["phone"]
     email = request.form["email"]
+
     query = f"""
         INSERT INTO register (
             course_id,
@@ -46,13 +56,14 @@ def register():
             phone,
             email
         ) VALUES (
-            {course_id}
+            '{course_id}',
             '{name}',
             '{phone}',
             '{email}'
         )
-        """
+    """
     execute_query(query)
+
     return redirect(url_for("index"))
 
 
@@ -61,17 +72,25 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        user_data = execute_query(f"""
-            SELECT role, user_id FROM user
+
+        user_data_query = f"""
+            SELECT
+                role,
+                user_id
+            FROM user
             WHERE email = '{email}' AND password = '{password}'
-        """)
+        """
+        user_data = execute_query(user_data_query)
 
         if not user_data:
-            abort(403, 'Invalid email or password')
+            message = 'Invalid email or password'
+
+            return render_template('login.html', message=message)
 
         session['username'] = email
         session['role'] = user_data[0][0]
         session['id'] = user_data[0][1]
+
         return render_template('home.html')
 
     return render_template('login.html')
@@ -80,146 +99,122 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
+
     return redirect(url_for("login"))
 
 
-@app.route('/control_panel')
-def control_panel():
-    teacher_list = execute_query("""
-        SELECT teacher_id, name FROM teacher
-    """)
-    course_list = execute_query("""
-        SELECT course_id, name FROM course
-    """)
-    student_list = execute_query("""
-        SELECT student_id, name FROM student
-    """)
-    ac_list = execute_query("""
-        SELECT ac_id, course.name, teacher.name FROM active_course
-        JOIN course ON active_course.course_id=course.course_id
-        JOIN teacher ON active_course.teacher_id=teacher.teacher_id
-    """)
+@app.route('/admin', methods=["GET", "POST"])
+def admin():
+    if request.method == "POST":
+        pass
 
-    return render_template("admin.html", teacher_list=teacher_list,
-                           course_list=course_list, ac_list=ac_list,
-                           student_list=student_list)
+    return render_template("admin.html")
 
 
-@app.route('/create_new_user', methods=["POST"])
-def create_new_user():
-    email = request.form["user_email"]
-    password = request.form["user_password"]
-    role = request.form["role"]
+@app.route('/admin_new_user', methods=["GET", "POST"])
+def admin_new_user():
+    if request.method == "POST":
+        pass
 
-    execute_query(f"""
-        INSERT INTO user (
-            email, password, role
-        ) VALUES (
-            '{email}', '{password}', '{role}'
-        )
-    """)
-
-    user_id = execute_query(f"""
-        SELECT user_id FROM user WHERE email = '{email}'
-    """)[0]
-
-    execute_query(f"""
-        INSERT INTO student (
-            user_id
-        ) VALUES (
-            '{user_id}'
-        )
-    """)
-
-    return redirect(url_for("control_panel"))
+    return render_template("admin-user.html")
 
 
-@app.route('/create_new_course', methods=["POST"])
-def create_new_course():
-    course_name = request.form['course_name']
-    course_desc = request.form['course_desc']
+@app.route('/admin_new_course', methods=["GET", "POST"])
+def admin_new_course():
+    if request.method == "POST":
+        if "add_course":
+            course_name = request.form["course_name"]
+            course_desc = request.form["course_desc"]
 
-    execute_query(f"""
-        INSERT INTO course (
-            name, desc
-        ) VALUES (
-            '{course_name}', '{course_desc}'
-        )
-    """)
+            add_new_course_query = f"""
+                INSERT INTO course (
+                    name,
+                    desc
+                ) VALUES (
+                    '{course_name}',
+                    '{course_desc}'
+                )
+            """
+            execute_query(add_new_course_query)
 
-    return redirect(url_for("control_panel"))
+            return redirect("admin_new_course")
 
-
-@app.route('/create_active_course', methods=["POST"])
-def create_active_course():
-    course_id = request.form['course_id']
-    teacher_id = request.form['teacher_id']
-    start_date = request.form['start_date']
-    end_date = request.form['end_date']
-    execute_query(f"""
-        INSERT INTO active_course (
-            course_id, teacher_id, start_date, end_date
-        ) VALUES (
-            '{course_id}', '{teacher_id}', '{start_date}', '{end_date}'
-        )
-    """)
-
-    return redirect(url_for("control_panel"))
+    return render_template("admin-course.html")
 
 
-@app.route('/add_student_to_active_course', methods=["POST"])
-def method_name():
-    student_id = request.form['student_id']
-    ac_id = request.form['ac_id']
-    execute_query(f"""
-        INSERT INTO course_stud (
-            active_course_id, student_id
-        ) VALUES (
-            '{student_id}', '{ac_id}'
-        )
-    """)
-    return redirect(url_for("control_panel"))
+@app.route('/admin_new_active_course', methods=["GET", "POST"])
+def admin_new_active_course():
+    if request.method == "POST":
+        pass
+
+    return render_template("admin-active-course.html")
 
 
-# NEED IMPROVMENTS :
-# @app.route('/profile', methods=["GET", "POST"])
-# def profile():
-#     user_id = int(session["id"])
-#     stud_id = execute_query(f"""
-#         SELECT student_id FROM student
-#         JOIN user ON student.user_id = user.user_id
-#         WHERE student.user_id={user_id}
-#         """)
+@app.route('/teacher_work_place', methods=["GET", "POST"])
+def teacher_work_place():
+    user_id = session["id"]
 
-#     if request.method == "POST":
-#         name = request.form["name"]
-#         image = request.files["image"]
-#         blob_image = base64.b64encode(image.read())
-#         print(blob_image)
-#         gender = request.form["gender"]
-#         birth_date = request.form["date"]
-#         phone = request.form["phone"]
-#         address = request.form["address"]
-#         execute_query(f"""
-#             UPDATE student SET
-#                 name = ?,
-#                 image = ?,
-#                 gender = ?,
-#                 birth_date = ?,
-#                 phone = ?,
-#                 address = ?
-#             WHERE user_id = {user_id}
-#         """, params=(name, blob_image, gender, birth_date, phone, address))
+    get_teacher_info_query = f"""
+        SELECT
+            teacher_id,
+            name
+        FROM teacher
+        WHERE user_id = {user_id}
+        """
+    teacher = execute_query(get_teacher_info_query)[0]
 
-#         return redirect(url_for("profile"))
+    get_courses_query = f"""
+        SELECT
+            active_course.ac_id,
+            course.name
+        FROM active_course
+        JOIN course
+            ON active_course.course_id = course.course_id
+        WHERE teacher_id = {teacher[0]}
+        """
+    courses = execute_query(get_courses_query)
 
-    # student_info = execute_query(f"""
-    #     SELECT * FROM user
-    #     JOIN student ON user.user_id = student.user_id
-    #     WHERE user.user_id = {user_id}
-    # """)
+    if request.method == "POST":
+        active_course_id = request.form["active_course_id"]
 
-    # return render_template("profile.html", student_info=student_info)
+        get_student_grade_query = f"""
+            SELECT
+                active_course_student.acs_id,
+                active_course_student.grade,
+                student.student_id,
+                student.name,
+                course.name
+            FROM active_course_student
+            JOIN student
+                ON active_course_student.student_id = student.student_id
+            JOIN active_course
+                ON active_course_student.ac_id = active_course.ac_id
+            JOIN course
+                ON active_course.course_id = course.course_id
+            WHERE active_course.ac_id = {active_course_id}
+        """
+        students = execute_query(get_student_grade_query)
+
+        return render_template("teacher-work-place.html", students=students,
+                               courses=courses, teacher_name=teacher[1])
+
+    return render_template("teacher-work-place.html", courses=courses,
+                           teacher_name=teacher[1])
+
+
+@app.route('/add_student_grade', methods=["POST"])
+def add_student_grade():
+    student_id = request.form["student_id"]
+    grade = request.form["grade"]
+
+    update_grade_query = f"""
+        UPDATE active_course_student SET
+            grade = '{grade}'
+        WHERE student_id = {student_id}
+        """
+    execute_query(update_grade_query)
+
+    return redirect(request.referrer)
 
 
 @app.route('/course')
@@ -227,77 +222,10 @@ def course():
     return render_template("course.html")
 
 
-@app.route('/teacher')
-def teacher():
-    return render_template("teacher.html")
-
-
 @app.route('/student')
 def student():
     return render_template("student.html")
 
-
-# @app.route('/profile/<name>')
-# def show_profile(name):
-#     teacher_list = execute_query(f"""
-#         SELECT * FROM teacher
-#         WHERE name LIKE '{name}'
-#     """)
-
-#     if teacher_list != 0:
-#         return render_template("p.html", data=teacher_list)
-
-#     course_list = execute_query(f"""
-#         SELECT * FROM course
-#         WHERE name LIKE '{name}'
-#     """)
-
-#     if course_list != 0:
-#         return render_template("p.html", data=course_list)
-
-#     student_list = execute_query(f"""
-#         SELECT * FROM student
-#         WHERE name LIKE '{name}'
-#     """)
-
-#     if student_list != 0:
-#         return render_template("p.html", data=student_list)
-
-
-# @app.route('/search')
-# def x():
-#     search = request.args["search"].title()
-#     if len(search) != 0:
-#         results = []
-#         if request.form.get('student'):
-#             student_data = execute_query(f"""
-#                 SELECT name FROM student
-#                 WHERE name LIKE '%{search}%'
-#             """)
-#             if len(student_data) != 0:
-#                 results = list(map(list.__add__, [student for student in student_data], results))
-
-#         if request.form.get('teacher'):
-#             teacher_data = execute_query(f"""
-#                 SELECT name FROM teacher
-#                 WHERE name LIKE '%{search}%'
-#             """)
-#             if len(teacher_data) != 0:
-#                 results = list(map(list.__add__, [teacher for teacher in teacher_data], results))
-
-#         if request.form.get('course'): 
-#             course_data = execute_query(f"""
-#                 SELECT name FROM course
-#                 WHERE name LIKE '%{search}%'
-#             """)
-#             if len(course_data) != 0:
-#                 results = list(map(list.__add__, [course for course in course_data], results))
-
-#         return render_template("search.html", results=results)
-
-#         return redirect(url_for("index"))
-
-#     return redirect(url_for("index"))
 
 if __name__ == "__main__":
     app.run(debug=True)

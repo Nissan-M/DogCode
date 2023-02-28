@@ -21,6 +21,11 @@
     <div class="form_field_3">
       <input class="btn-login" type="submit" value="Login">
     </div>
+    <div class="form_field_4">
+      {% if message %}
+      <p style="font-size: 150%;">{{ message }}</p>
+      {% endif %}
+    </div>
   </form>
 </div>
 {% endblock %}
