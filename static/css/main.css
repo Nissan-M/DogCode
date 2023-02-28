@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: serif;
+}
+
+.background {
+  background-color: #ffffff;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: [c1] 50% [c2] 50% [c3];
+  grid-template-rows: [r1] 75px [r2] 455px [r3] auto [r4];
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+/* ----------NAV-BAR---------- */
+
+.navbar {
+  grid-column-start: c1;
+  grid-column-end: c3;
+  grid-row-start: r1;
+  grid-row-end: r2;
+
+  display: grid;
+  grid-template-columns: [c1] 200px [c2] 400px [c3] auto [c4] 200px [c5];
+
+  background-color: #ffbf00;
+  border: 1px solid black;
+}
+
+.logo {
+  grid-column-start: c1;
+  grid-column-end: c2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  gap: 10%;
+
+  color: black;
+}
+
+.logo > a {
+  text-decoration: none;
+  font-size: 300%;
+  font-weight: 700;
+  color: black;
+}
+
+.nav_search {
+  grid-column-start: c2;
+  grid-column-end: c3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inp_search {
+  width: 200px;
+  height: 32px;
+  padding: 0 15px;
+
+  outline: none;
+  font-size: 22px;
+  color: black;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.inp_search::placeholder {
+  color: black;
+}
+
+.search_checkbox {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+
+.nav_login {
+  grid-column-start: c4;
+  grid-column-end: c5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 30px;
+  width: max-content;
+
+  background-color: black;
+  border-radius: 20px;
+}
+
+.login > a {
+  text-decoration: none;
+  font-size: 140%;
+  color: #ffffff;
+}
+
+.login > a:hover {
+  color: #ffce3b;
+}
+
+.nav_links {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav_link {
+  text-decoration: none;
+  font-size: 135%;
+  color: black;
+}
+
+.nav_link:hover {
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* ----------END---------- */

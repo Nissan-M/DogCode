@@ -217,14 +217,15 @@ def add_student_grade():
     return redirect(request.referrer)
 
 
-@app.route('/course')
-def course():
-    return render_template("course.html")
+@app.route('/student_view/<student_id>')
+def student_view(student_id):
 
-
-@app.route('/student')
-def student():
     return render_template("student.html")
+
+
+
+
+
 
 
 if __name__ == "__main__":
