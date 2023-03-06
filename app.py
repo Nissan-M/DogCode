@@ -1,6 +1,7 @@
 from setup_db import execute_query
 from flask import (Flask, render_template, redirect, url_for, request,
                    session)
+import datetime
 
 
 app = Flask(__name__)
@@ -89,7 +90,7 @@ def login():
 
         session['username'] = email
         session['role'] = user_data[0][0]
-        session['id'] = user_data[0][1]
+        session['user_id'] = user_data[0][1]
 
         return render_template('home.html')
 
@@ -152,80 +153,175 @@ def admin_new_active_course():
 
 @app.route('/teacher_work_place', methods=["GET", "POST"])
 def teacher_work_place():
-    user_id = session["id"]
+    user_id = session["user_id"]
 
-    get_teacher_info_query = f"""
-        SELECT
-            teacher_id,
-            name
-        FROM teacher
+    get_teacher_name_query = f"""
+        SELECT name FROM teacher
         WHERE user_id = {user_id}
         """
-    teacher = execute_query(get_teacher_info_query)[0]
+    teacher_name = execute_query(get_teacher_name_query)[0][0]
 
-    get_courses_query = f"""
+    if request.method == "POST":
+        pass
+
+    return render_template("teacher-work-place.html",
+                           name=teacher_name)
+
+
+@app.route('/teacher_add_grade', methods=["GET", "POST"])
+def teacher_add_grade():
+    user_id = session["user_id"]
+
+    get_teacher_name_query = f"""
+        SELECT name FROM teacher
+        WHERE user_id = {user_id}
+        """
+    teacher_name = execute_query(get_teacher_name_query)[0][0]
+
+    get_teacher_courses_query = f"""
         SELECT
             active_course.ac_id,
             course.name
         FROM active_course
         JOIN course
             ON active_course.course_id = course.course_id
-        WHERE teacher_id = {teacher[0]}
+        JOIN teacher
+            ON active_course.teacher_id = teacher.teacher_id
+        WHERE teacher.user_id = {user_id}
         """
-    courses = execute_query(get_courses_query)
+    teacher_courses = execute_query(get_teacher_courses_query)
+
+    active_course_id = request.form["active_course_id"]
+
+    get_student_grade_query = f"""
+        SELECT
+            active_course_student.acs_id,
+            active_course_student.grade,
+            student.student_id,
+            student.name
+        FROM active_course_student
+        JOIN student
+            ON active_course_student.student_id = student.student_id
+        JOIN active_course
+            ON active_course_student.ac_id = active_course.ac_id
+        JOIN course
+            ON active_course.course_id = course.course_id
+        WHERE active_course.ac_id = {active_course_id}
+    """
+    students_grade = execute_query(get_student_grade_query)
 
     if request.method == "POST":
-        active_course_id = request.form["active_course_id"]
 
-        get_student_grade_query = f"""
+        return render_template("teacher-work-place-add-grade.html",
+                               name=teacher_name,
+                               courses=teacher_courses,
+                               students_grade=students_grade)
+
+    return render_template("teacher-work-place-add-grade.html",
+                           name=teacher_name,
+                           courses=teacher_courses)
+
+
+@app.route('/teacher_attendance', methods=["GET", "POST"])
+def teacher_attendance():
+    user_id = session["user_id"]
+
+    get_teacher_query = f"""
+        SELECT teacher_id, name FROM teacher
+        WHERE user_id = {user_id}
+        """
+    teacher = execute_query(get_teacher_query)[0]
+
+    current_date = datetime.date.today()
+
+    get_teacher_courses_query = f"""
+        SELECT
+            course.name,
+            active_course.ac_id
+        FROM
+            course
+        JOIN active_course
+            ON course.course_id = active_course.course_id
+        WHERE active_course.teacher_id = {teacher[0]}
+        """
+    teacher_courses = execute_query(get_teacher_courses_query)
+
+    active_course = ""
+    if "course_id" in request.args:
+        active_course = request.args.get("course_id")
+
+        get_studend_attendance_query = f"""
             SELECT
-                active_course_student.acs_id,
-                active_course_student.grade,
-                student.student_id,
+                class.class_id,
                 student.name,
+                student.student_id,
+                attendance.status,
                 course.name
-            FROM active_course_student
+            FROM class
             JOIN student
-                ON active_course_student.student_id = student.student_id
+                ON class.student_id = student.student_id
+            LEFT JOIN attendance
+                ON class.class_id = attendance.class_id
             JOIN active_course
-                ON active_course_student.ac_id = active_course.ac_id
+                ON class.ac_id = active_course.ac_id
             JOIN course
                 ON active_course.course_id = course.course_id
-            WHERE active_course.ac_id = {active_course_id}
-        """
-        students = execute_query(get_student_grade_query)
+            WHERE active_course.ac_id = {active_course}
+            """
+        student_attendance = execute_query(get_studend_attendance_query)
+        course_name = student_attendance[0][4]
 
-        return render_template("teacher-work-place.html", students=students,
-                               courses=courses, teacher_name=teacher[1])
+    else:
+        student_attendance = []
+        course_name = ''
 
-    return render_template("teacher-work-place.html", courses=courses,
-                           teacher_name=teacher[1])
+    if request.method == "POST":
+        class_id = request.form["class_id"]
+        att_date = request.form["att_date"]
+        att_status = request.form["att_status"]
 
+        att_check_query = f"""
+            SELECT attendance_id FROM attendance
+            WHERE class_id = {class_id}
+            """
+        att_check = execute_query(att_check_query)
 
-@app.route('/add_student_grade', methods=["POST"])
-def add_student_grade():
-    student_id = request.form["student_id"]
-    grade = request.form["grade"]
+        if att_check == []:
+            add_attendance_query = f"""
+                INSERT INTO attendance (
+                    class_id,
+                    date,
+                    status
+                ) VALUES (
+                    '{class_id}',
+                    '{att_date}',
+                    '{att_status}'
+                )
+                """
+            execute_query(add_attendance_query)
 
-    update_grade_query = f"""
-        UPDATE active_course_student SET
-            grade = '{grade}'
-        WHERE student_id = {student_id}
-        """
-    execute_query(update_grade_query)
+        else:
+            update_attendance_query = f"""
+                UPDATE attendance SET
+                    status = '{att_status}'
+                WHERE attendance_id = {att_check[0][0]}
+                """
+            execute_query(update_attendance_query)
 
-    return redirect(request.referrer)
+        return redirect(request.referrer)
+
+    return render_template("teacher-attendance.html",
+                           name=teacher[1],
+                           courses=teacher_courses,
+                           student_attendance=student_attendance,
+                           current_date=current_date,
+                           course=course_name)
 
 
 @app.route('/student_view/<student_id>')
 def student_view(student_id):
 
-    return render_template("student.html")
-
-
-
-
-
+    return render_template("student-view.html")
 
 
 if __name__ == "__main__":

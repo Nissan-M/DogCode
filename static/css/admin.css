@@ -1,82 +1,114 @@
-
-
-
-
-
+/* ----------ADMIN---------- */
 .section_admin {
     grid-column-start: c1;
     grid-column-end: c3;
     grid-row-start: r2;
     grid-row-end: r4;
-
+  
     display: grid;
-    grid-template-rows: [r1] 45px [r2] 410px [r3];
-}
-
-.admin_navbar {
+    grid-template-rows: [r1]20%[r2]20%[r3]20%[r4]20%[r5];
+  }
+  
+  .con_1 {
     grid-row-start: r1;
     grid-row-end: r2;
-
+  }
+  
+  .con_2 {
+    grid-row-start: r2;
+    grid-row-end: r3;
+  }
+  
+  .con_3 {
+    grid-row-start: r3;
+    grid-row-end: r4;
+  }
+  
+  .con_4 {
+    grid-row-start: r4;
+    grid-row-end: r5;
+  }
+  
+  /* ----------END---------- */
+  
+   /* ----------ADMIN---------- */
+  
+  .section_admin {
+    grid-column-start: c1;
+    grid-column-end: c3;
+    grid-row-start: r2;
+    grid-row-end: r4;
+  
+    display: grid;
+    grid-template-rows: [r1] 45px [r2] 410px [r3];
+  }
+  
+  .admin_navbar {
+    grid-row-start: r1;
+    grid-row-end: r2;
+  
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     padding-right: 250px;
     gap: 25px;
-
+  
     background-color: black;
-}
-
-.admin_link {
+  }
+  
+  .admin_link {
     text-decoration: none;
     color: #ffffff;
     font-size: 135%;
-}
-
-.admin_link:hover {
+  }
+  
+  .admin_link:hover {
     color: #FFBF00;
-}
-
-.admin_todo {
+  }
+  
+  .admin_todo {
     grid-row-start: r2;
     grid-row-end: r3;
-
+  
     display: flex;
     justify-content: center;
     align-items: center;
-
+  
     background-color: #FFBF00;
     border: 1px solid black;
-}
-
-.admin_inner {
+  }
+  
+  .admin_inner {
     grid-row-start: r3;
     grid-row-end: r4;
     padding: 15px;
     display: grid;
     grid-template-columns: [c1] 50% [c2] 50% [c3];
-}
-
-.admin_con_1 {
+  }
+  
+  .admin_con_1 {
     grid-column-start: c1;
     grid-column-end: c2;
-
+  
     display: flex;
     justify-content: center;
     align-items: center;
     border-right: 2px solid #babcc2;
-}
-
-.admin_con_2 {
+  }
+  
+  .admin_con_2 {
     grid-column-start: c2;
     grid-column-end: c3;
-
+  
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.admin_user {
+  }
+  
+  .admin_user {
     width: 100%;
     height: 100%;
     display: grid;
-}
+  }
+  
+   /* ----------END---------- */

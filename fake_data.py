@@ -92,7 +92,7 @@ def add_studet_to_active_course():
         for teacher in student_ids
     ]
     executemany_query("""
-        INSERT INTO active_course_student (
+        INSERT INTO class (
             student_id, ac_id, grade
         )
         VALUES (?, ?, ?)

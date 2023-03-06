@@ -1,0 +1,63 @@
+ /* ----------STUDENT-VIEW---------- */
+
+ .student_view_section {
+    grid-column-start: c1;
+    grid-column-end: c3;
+    grid-row-start: r2;
+    grid-row-end: r4;
+  
+    padding: 100px 200px;
+    display: flex;
+    /* overflow: hidden; */
+  }
+  
+  .student_view_card { 
+    display: grid;
+    grid-template-rows: [r1] 300px [r2] auto [r3];
+  }
+  
+  .student_view_card_img {
+    grid-row-start: r1;
+    grid-row-end: r2;
+  
+    background-color: black;
+    width: 250px;
+    height: 250px;
+  }
+  
+  .student_view_card_info {
+    grid-row-start: r2;
+    grid-row-end: r3;
+  }
+  
+  .student_view_card_name {
+    padding-bottom: 25px;
+    font-size: 150%;
+  }
+  
+  .student_view_card_grade {
+    display: grid;
+    grid-template-columns: [c1] 200px [c2]200px [c3] 100px [c4];
+  
+    font-size: 135%;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #3e403f;
+  }
+  
+  .student_view_1 {
+    grid-column-start: c1;
+    grid-column-end: c2;
+  }
+  
+  .student_view_2 {
+    grid-column-start: c2;
+    grid-column-end: c3;
+  }
+  
+  .student_view_3 {
+    grid-column-start: c3;
+    grid-column-end: c4;
+  }
+  
+    /* ----------END---------- */

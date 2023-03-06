@@ -101,3 +101,71 @@
 #         return redirect(url_for("index"))
 
 #     return redirect(url_for("index"))
+
+
+
+
+@app.route('/teacher_work_place', methods=["GET", "POST"])
+def teacher_work_place():
+    user_id = session["id"]
+
+    teacher_courses_data_query = f"""
+        SELECT
+            active_course.ac_id,
+            course.name,
+            teacher.name
+        FROM active_course
+        JOIN course
+            ON active_course.course_id = course.course_id
+        JOIN teacher
+            ON active_course.teacher_id = teacher.teacher_id
+        WHERE teacher.user_id = {user_id}
+        """
+    teacher_courses_data = execute_query(teacher_courses_data_query)
+
+    if request.method == "POST":
+        active_course_id = request.form["active_course_id"]
+
+        get_student_grade_query = f"""
+            SELECT
+                active_course_student.acs_id,
+                active_course_student.grade,
+                student.student_id,
+                student.name
+            FROM active_course_student
+            JOIN student
+                ON active_course_student.student_id = student.student_id
+            JOIN active_course
+                ON active_course_student.ac_id = active_course.ac_id
+            JOIN course
+                ON active_course.course_id = course.course_id
+            WHERE active_course.ac_id = {active_course_id}
+        """
+        students_grade = execute_query(get_student_grade_query)
+
+        return render_template("teacher-work-place.html",
+                               students_grade=students_grade,
+                               teacher_courses_data=teacher_courses_data)
+
+    return render_template("teacher-work-place.html",
+                           teacher_courses_data=teacher_courses_data)
+
+
+@app.route('/teacher_attendance', methods=["POST"])
+def teacher_attendance():
+    return redirect(url_for(teacher_work_place))
+
+
+@app.route('/add_student_grade', methods=["POST"])
+def add_student_grade():
+    course_id = request.form["course_id"]
+    grade = request.form["grade"]
+
+    update_grade_query = f"""
+        UPDATE active_course_student SET
+            grade = '{grade}'
+        WHERE active_course_student.acs_id = {course_id}
+        """
+    execute_query(update_grade_query)
+
+    return redirect(request.referrer)

@@ -15,3 +15,5 @@ __pycache__/setup_db.cpython-310.pyc
 Models/__pycache__/setup_db.cpython-310.pyc
 .gitignore
 Models/__pycache__/user.cpython-310.pyc
+app_to_add.py
+app_to_add.py

@@ -1,137 +1,111 @@
+.section_teacher {
+  grid-column-start: c1;
+  grid-column-end: c3;
+  grid-row-start: r2;
+  grid-row-end: r4;
 
-
-
-
-
-.section_work_place {
-    grid-column-start: c1;
-    grid-column-end: c3;
-    grid-row-start: r2;
-    grid-row-end: r4;
-
-    display: grid;
-    grid-template-columns:[c1] 50% [c2] 50% [c3];
-    grid-template-rows: [r1] 455px [r2] 125px [r3] auto [r4];
+  display: grid;
+  grid-template-rows: [r1] 54px [r2] 410px [r3] auto [r4];
+  overflow: scroll;
 }
+
+/* ----------SUB-NAV---------- */
+
+.teacher_subnav {
+  grid-row-start: r1;
+  grid-row-end: r2;
+
+  display: grid;
+  grid-template-columns: [c1] max-content [c2] auto [c3];
+
+  background-color: black;
+}
+
+.teacher_header {
+  grid-column-start: c1;
+  grid-column-end: c2;
+
+  align-self: center;
+  padding-left: 25px;
+
+  color: #ffffff;
+  font-size: 175%;
+}
+
+.teacher_links {
+  grid-column-start: c2;
+  grid-column-end: c3;
+
+  padding-right: 225px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 25px;
+}
+
+.teacher_link {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 135%;
+}
+/* ----------END---------- */
+
+/* ----------TEACHER-TODO---------- */
 
 .todo_con {
-    grid-column-start: c1;
-    grid-column-end: c3;
-    grid-row-start: r1;
-    grid-row-end: r2;
+  grid-row-start: r2;
+  grid-row-end: r3;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    background-color: #FFBF00;
-    border: 1px solid black;
+  background-color: #FFBF00;
+  border: 1px solid black;
 }
 
-.teacher_work_place_header{
-    grid-column-start: c1;
-    grid-column-end: c3;
-    grid-row-start: r2;
-    grid-row-end: r3;
+/* ----------END---------- */
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ----------ATTENDANCE---------- */
+
+.teacher_attendance_card{
+  grid-row-start: r3;
+  grid-row-end: r4;
+
+  display: grid;
+  grid-template-rows: [r1] 40px [r2] 40px [r3] 40px [r4] auto [r5];
+
+  padding: 25px;
 }
 
-.teacher_action_header{
-    grid-row-start: r3;
-    grid-row-end: r4;
+.attendance_date {
+  grid-row-start: r2;
+  grid-row-end: r3;
+
+  display: flex;
+  flex-direction: column;
 }
 
-.student_grade_field {
-    grid-column-start: c1;
-    grid-column-end: c3;
+.attendance_form {
+  grid-row-start: r4;
+  grid-row-end: r5;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 25px 200px;
+  display: grid;
+  grid-template-columns: [c1] 100px [c2] max-content [c3] 50px [c4];
+  column-gap: 15px;
 }
 
-.teacher_courses_form {
-    display: grid;
-    grid-template-columns: [c1] 180px [c2] 145px [c3];
-    padding: 25px 8px;
+.attendance_radio {
+  grid-column-start: c2;
+  grid-column-end: c3;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
 }
 
-.teacher_course_name{
-    grid-column-start: c1;
-    grid-column-end: c2;
-
-    width: 140px;
-    padding: 1px 3px;
-    font-size: 115%;
-    border-radius: 10px;
+.attendance_btn {
+  grid-column-start: c3;
+  grid-column-end: c4;
 }
-
-.btn_teacher_course {
-    grid-column-start: c2;
-    grid-column-end: c3;
-
-    width: max-content;
-    padding: 4px 22px;
-    background-color: black;
-    color: #ffffff;
-    font-size: 125%;
-    border-radius: 20px;
-    border: none;
-}
-
-.student_grade_form {
-    display: grid;
-    grid-template-columns: [c1] 180px [c2] 80px [c3] 145px [c4];
-    border-bottom: 1px solid #3e403f;
-    padding-top: 15px;
-    padding-bottom: 4px;
-    gap: 15px;
-}
-
-.student_grade_name {
-    grid-column-start: c1;
-    grid-column-end: c2;
-    
-    padding-left: 8px;
-    font-size: 125%;
-
-}
-
-.inp_student_grade {
-    grid-column-start: c2;
-    grid-column-end: c3;
-    font-size: 125%;
-    width: 55px;
-    height: max-content;
-}
-
-.btn_student_grade {
-    grid-column-start: c3;
-    grid-column-end: c4;
-
-    width: max-content;
-    padding: 4px 22px;
-    background-color: black;
-    color: #ffffff;
-    font-size: 125%;
-    border-radius: 20px;
-    border: none;
-
-}
-.student_message_field {
-    grid-column-start: c2;
-    grid-column-end: c3;
-    grid-row-start: r2;
-    grid-row-end: r3;
-
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
+/* ----------END---------- */
+  

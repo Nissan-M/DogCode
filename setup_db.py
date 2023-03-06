@@ -84,8 +84,8 @@ def create_tables():
     execute_query(create_active_course_table_query)
 
     create_course_stud_table_query = """
-        CREATE TABLE IF NOT EXISTS active_course_student (
-            acs_id  INTEGER     PRIMARY KEY
+        CREATE TABLE IF NOT EXISTS class (
+            class_id  INTEGER     PRIMARY KEY
           , ac_id       INTEGER     NOT NULL
           , student_id  INTEGER     NOT NULL
           , grade       INTEGER
@@ -128,6 +128,17 @@ def admin_user():
         )
         """
     execute_query(create_admin_user_query)
+
+    create_attendance_table_query = """
+        CREATE TABLE IF NOT EXISTS attendance (
+            attendance_id   INTEGER     PRIMARY KEY
+          , class_id          INTEGER     NOT NULL
+          , date            TEXT        NOT NULL
+          , status           TEXT
+          , FOREIGN KEY (class_id) REFERENCES class (class_id)
+        )
+        """
+    execute_query(create_attendance_table_query)
 
 
 if __name__ == "__main__":

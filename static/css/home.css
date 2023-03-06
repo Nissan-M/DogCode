@@ -1,77 +1,72 @@
-
-
-
-
-
 /* ----------REGISTER---------- */
 
 .section_register {
     grid-column-start: c1;
     grid-column-end: c3;
-    grid-row-start: r1;
+    grid-row-start: r2;
     grid-row-end: r3;
-
+  
     display: grid;
-    grid-template-columns: [c1] 600px [c2] auto [c3];
+    grid-template-columns: [c1] 25% [c2] 75% [c3];
     background-color: #FFBF00;
     border: 1px solid black;    
     border-top: none;
-}
-
-.con_register {
+  }
+  
+  .con_register {
     grid-column-start: c1;
     grid-column-end: c2;
-
+  
     display: grid;
     grid-template-rows: [r1] 27% [r2] 14% [r3] 14% [r4] 14% [r5] 14% [r6] 14% [r7] 3% [R8];
-}
-
-.register_header {
+  }
+  
+  .register_header {
     grid-row-start: r1;
     grid-row-end: r2;
-
+  
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.register_field_1,
-.register_field_2,
-.register_field_3,
-.register_field_4,
-.register_field_5 {
+  }
+  
+  .register_field_1,
+  .register_field_2,
+  .register_field_3,
+  .register_field_4,
+  .register_field_5 {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.register_field_1 {
+  }
+  
+  .register_field_1 {
     grid-row-start: r2;
     grid-row-end: r3;
-}
-
-.register_field_2 {
+  }
+  
+  .register_field_2 {
     grid-row-start: r3;
     grid-row-end: r4;
-}
-
-.register_field_3 {
+  }
+  
+  .register_field_3 {
     grid-row-start: r4;
     grid-row-end: r5;
-}
-
-.register_field_4 {
+  }
+  
+  .register_field_4 {
     grid-row-start: r5;
     grid-row-end: r6;
-}
-
-.register_field_5 {
+  }
+  
+  .register_field_5 {
     grid-row-start: r6;
     grid-row-end: r7;
-}
-
-.inp_register {
+  }
+  
+  .inp_register {
     width: 180px;
     height: 28px;
     padding: 0 15px;
@@ -80,13 +75,13 @@
     outline: none;
     border: 1px solid black; 
     border-radius: 10px;
-}
-
-.inp_register::placeholder{
+  }
+  
+  .inp_register::placeholder{
     color: black;
-}
-
-.btn_register {
+  }
+  
+  .btn_register {
     padding: 5px 0;
     width: 215px;
     background-color: black;
@@ -94,36 +89,35 @@
     border-radius: 15px;
     color: #ffffff;
     font-size: 150%;
-}
-
-.btn_register:hover {
+  }
+  
+  .btn_register:hover {
     box-shadow: none;
     color: #ffce3b;
-}
-
-/* ----------END---------- */
-
-/* ----------CONTENT---------- */
-
-.con_content {
+  }
+  /* ----------END---------- */
+  
+  /* ----------CONTENT---------- */
+  
+  .con_content {
     grid-column-start: c2;
     grid-column-end: c3; 
     display: grid;
     grid-template-rows: [r1] 28% [r2] 72% [r3];
-}
-
-.content_header {
+  }
+  
+  .content_header {
     grid-row-start: r1;
     grid-row-end: r2;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.content_inner {
+  }
+  
+  .content_inner {
     grid-row-start: r2;
     grid-row-end: r3;
     display: flex;
     justify-content: center;
-}
-/* ----------END---------- */
+  }
+  /* ----------END---------- */
