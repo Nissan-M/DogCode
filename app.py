@@ -8,6 +8,18 @@ app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
+def greetings():
+    current_time = datetime.datetime.now()
+    current_hour = current_time.hour
+    if current_hour < 12:
+        message = "Good morning"
+    elif current_hour < 18:
+        message = "Good afternoon"
+    else:
+        message = "Good evening"
+    return message
+
+
 @app.before_request
 def auth():
     if "role" not in session.keys():
@@ -161,11 +173,14 @@ def teacher_work_place():
         """
     teacher_name = execute_query(get_teacher_name_query)[0][0]
 
+    message = greetings()
+
     if request.method == "POST":
         pass
 
     return render_template("teacher-work-place.html",
-                           name=teacher_name)
+                           name=teacher_name,
+                           message=message)
 
 
 @app.route('/teacher_add_grade', methods=["GET", "POST"])
@@ -232,6 +247,8 @@ def teacher_attendance():
         """
     teacher = execute_query(get_teacher_query)[0]
 
+    message = greetings()
+
     current_date = datetime.date.today()
 
     get_teacher_courses_query = f"""
@@ -247,26 +264,33 @@ def teacher_attendance():
     teacher_courses = execute_query(get_teacher_courses_query)
 
     active_course = ""
+    date = ""
     if "course_id" in request.args:
-        active_course = request.args.get("course_id")
+        active_course = int(request.args.get("course_id"))
 
+        if active_course == 0:
+            return redirect(request.referrer)
+
+        date = request.args.get("date")
         get_studend_attendance_query = f"""
             SELECT
                 class.class_id,
-                student.name,
-                student.student_id,
-                attendance.status,
-                course.name
-            FROM class
-            JOIN student
-                ON class.student_id = student.student_id
-            LEFT JOIN attendance
-                ON class.class_id = attendance.class_id
-            JOIN active_course
-                ON class.ac_id = active_course.ac_id
-            JOIN course
-                ON active_course.course_id = course.course_id
-            WHERE active_course.ac_id = {active_course}
+                stud.name,
+                stud.student_id,
+                att.status,
+                crs.name
+            FROM
+                class
+                INNER JOIN student stud
+                    ON class.student_id = stud.student_id
+                LEFT JOIN attendance att
+                    ON class.class_id = att.class_id AND att.date = '{date}'
+                INNER JOIN active_course ac
+                    ON class.ac_id = ac.ac_id
+                INNER JOIN course crs
+                    ON ac.course_id = crs.course_id
+            WHERE
+                ac.ac_id = {active_course};
             """
         student_attendance = execute_query(get_studend_attendance_query)
         course_name = student_attendance[0][4]
@@ -276,13 +300,19 @@ def teacher_attendance():
         course_name = ''
 
     if request.method == "POST":
-        class_id = request.form["class_id"]
-        att_date = request.form["att_date"]
-        att_status = request.form["att_status"]
+        if "att_status" in request.form:
+            class_id = request.form["class_id"]
+            att_date = request.form["att_date"]
+            att_status = request.form["att_status"]
+
+        else:
+            return redirect(request.referrer)
 
         att_check_query = f"""
-            SELECT attendance_id FROM attendance
+            SELECT attendance_id
+            FROM attendance
             WHERE class_id = {class_id}
+            AND date = {att_date}
             """
         att_check = execute_query(att_check_query)
 
@@ -312,9 +342,11 @@ def teacher_attendance():
 
     return render_template("teacher-attendance.html",
                            name=teacher[1],
+                           message=message,
                            courses=teacher_courses,
                            student_attendance=student_attendance,
                            current_date=current_date,
+                           date=date,
                            course=course_name)
 
 

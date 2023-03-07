@@ -79,8 +79,8 @@
 }
 
 .attendance_date {
-  grid-row-start: r2;
-  grid-row-end: r3;
+  grid-row-start: r3;
+  grid-row-end: r4;
 
   display: flex;
   flex-direction: column;
@@ -93,6 +93,13 @@
   display: grid;
   grid-template-columns: [c1] 100px [c2] max-content [c3] 50px [c4];
   column-gap: 15px;
+
+  padding-top: 10px;
+  padding-bottom: 5px;
+
+  border-bottom: 1px solid #cccccc;
+  width: max-content;
+
 }
 
 .attendance_radio {
@@ -103,9 +110,28 @@
   gap: 8px;
 }
 
+.student_name {
+  text-decoration: none;
+  color: black;
+}
+
 .attendance_btn {
   grid-column-start: c3;
   grid-column-end: c4;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  border-radius: 15px;
+  background-color: black;
+  color: #ffffff;
+  font-size: 125%;
+  width: 65px;
+  height: 25px;
 }
+
+
 /* ----------END---------- */
   

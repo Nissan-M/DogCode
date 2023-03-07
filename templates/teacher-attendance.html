@@ -10,18 +10,18 @@
   <div class="teacher_attendance_card">
     <form action="" method="get">
       <select name="course_id">
-        <option hidden>Select Course</option>
+        <option hidden value="0">{% if course != '' %}{{ course }}{% else %}Select Course{% endif %}</option>
         {% for course in courses %}
         <option value="{{ course[1] }}">{{ course[0] }}</option>
         {% endfor %}
       </select>
-
+      <input type="date" name="date" value="{% if date != '' %}{{ date }}{% else %}{{current_date}}{% endif %}">
       <input type="submit" value="View">
     </form>
 
     {% if course != "" %}
     <div class="attendance_date">
-      <p>Date: {{ current_date }}</p>
+      <p>Date: {{ date }}</p>
     </div>
 
     <div class="attendance_header">
@@ -50,5 +50,8 @@
     </div>
   </div>
 
+  <div class="students_date_attendance_card">
+    
+  </div>
 </div>
 {% endblock %}
