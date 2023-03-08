@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block css %}/static/css/admin.css{% endblock %}
+{%block title %}Admin{% endblock %}
+{% block content %}
+{% include 'navbar.html'%}
+<div class="section_admin">
+  {% include 'admin-navbar.html'%}
+  <div class="admin_inner">
+
+    <div class="admin_con_1">
+      <div class="admin_attendance">
+        <form method="get" class="student_attendance_form">
+          <select name="student" class="select_attendance">
+            <option hidden value="">
+              {% if student != None %}
+              {{ student }}
+              {% else %}
+              Select student
+              {% endif %}
+            </option>
+            {% for student in students %}
+            <option value="{{ student[0] }}">{{ student[1] }}</option>
+            {% endfor %}
+          </select>
+          <input type="submit" value="Next" class="btn_select_attendance">
+        </form>
+
+        <form method="get" class="course_attendance_form">
+          <select name="course">
+            <option hidden value="">
+              {% if course != None%}
+              {{ course }}
+              {% else %}
+              Select course
+              {% endif %}
+            </option>
+            {% if 'student' in request.args %}
+            {% for course in courses %}
+            <option value="{{ course[0] }}">{{ course[1] }} - {{ course[0] }}</option>
+            {% endfor %}
+            {% endif %}
+          </select>
+          <input type="submit" value="Next">
+        </form>
+
+        {% if attendance != None %}
+        <div class="attendance_students">
+          <p>Course: {{ course }}, Student: {{ student }}</p><br>
+          {% for att in attendance %}
+          <p> Date: {{ att[1] }}, Status: {{ att[0] }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="admin_con_2">
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -6,12 +6,14 @@
 
   display: grid;
   grid-template-rows: [r1] 54px [r2] 410px [r3] auto [r4];
-  overflow: scroll;
+  grid-template-columns: [c1] 50% [c2] 50% [c3];
 }
 
 /* ----------SUB-NAV---------- */
 
 .teacher_subnav {
+  grid-column-start: c1;
+  grid-column-end: c3;
   grid-row-start: r1;
   grid-row-end: r2;
 
@@ -53,6 +55,8 @@
 /* ----------TEACHER-TODO---------- */
 
 .todo_con {
+  grid-column-start: c1;
+  grid-column-end: c3;
   grid-row-start: r2;
   grid-row-end: r3;
 
@@ -69,6 +73,8 @@
 /* ----------ATTENDANCE---------- */
 
 .teacher_attendance_card{
+  grid-column-start: c1;
+  grid-column-end: c2;
   grid-row-start: r3;
   grid-row-end: r4;
 
@@ -76,6 +82,11 @@
   grid-template-rows: [r1] 40px [r2] 40px [r3] 40px [r4] auto [r5];
 
   padding: 25px;
+}
+
+.attendance_header {
+  grid-row-start: r2;
+  grid-row-end: r3;
 }
 
 .attendance_date {
@@ -93,26 +104,29 @@
   display: grid;
   grid-template-columns: [c1] 100px [c2] max-content [c3] 50px [c4];
   column-gap: 15px;
-
   padding-top: 10px;
   padding-bottom: 5px;
-
-  border-bottom: 1px solid #cccccc;
   width: max-content;
 
+  border-bottom: 1px solid #cccccc;
+}
+
+.student_name {
+  grid-column-start: c1;
+  grid-column-end: c2;
+
+  text-decoration: none;
+  color: black;
 }
 
 .attendance_radio {
   grid-column-start: c2;
   grid-column-end: c3;
+
   display: flex;
   flex-direction: row;
-  gap: 8px;
-}
 
-.student_name {
-  text-decoration: none;
-  color: black;
+  gap: 8px;
 }
 
 .attendance_btn {
@@ -123,15 +137,13 @@
   justify-content: center;
   align-items: center;
 
-  border: none;
-  border-radius: 15px;
-  background-color: black;
-  color: #ffffff;
-  font-size: 125%;
   width: 65px;
   height: 25px;
+  border: none;
+  border-radius: 15px;
+  font-size: 125%;
+  background-color: black;
+  color: #ffffff;
 }
 
-
 /* ----------END---------- */
-  

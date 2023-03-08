@@ -11,12 +11,16 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def greetings():
     current_time = datetime.datetime.now()
     current_hour = current_time.hour
+
     if current_hour < 12:
         message = "Good morning"
+
     elif current_hour < 18:
         message = "Good afternoon"
+
     else:
         message = "Good evening"
+
     return message
 
 
@@ -41,17 +45,27 @@ def auth():
 
 @app.route('/')
 def index():
-    get_courses_query = """
-        SELECT course_id, name FROM course
-    """
-    courses = execute_query(get_courses_query)
+    courses_query = """
+        SELECT
+            course_id,
+            name
+        FROM
+            course
+        """
+    courses = execute_query(courses_query)
 
-    get_top_5_courses_query = """
-        SELECT name FROM course ORDER BY course_id DESC LIMIT 5
-    """
-    top_5_courses = execute_query(get_top_5_courses_query)
+    top_5_courses_query = """
+        SELECT
+            name
+        FROM
+            course
+        ORDER BY course_id DESC
+        LIMIT 5
+        """
+    top_5_courses = execute_query(top_5_courses_query)
 
-    return render_template("home.html", courses=courses,
+    return render_template("home.html",
+                           courses=courses,
                            new_courses=top_5_courses)
 
 
@@ -62,7 +76,7 @@ def register():
     phone = request.form["phone"]
     email = request.form["email"]
 
-    query = f"""
+    register_query = f"""
         INSERT INTO register (
             course_id,
             name,
@@ -74,10 +88,10 @@ def register():
             '{phone}',
             '{email}'
         )
-    """
-    execute_query(query)
+        """
+    execute_query(register_query)
 
-    return redirect(url_for("index"))
+    return redirect(request.referrer)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -90,9 +104,11 @@ def login():
             SELECT
                 role,
                 user_id
-            FROM user
-            WHERE email = '{email}' AND password = '{password}'
-        """
+            FROM
+                user
+            WHERE email = '{email}'
+            AND password = '{password}'
+            """
         user_data = execute_query(user_data_query)
 
         if not user_data:
@@ -147,7 +163,7 @@ def admin_new_course():
                     '{course_name}',
                     '{course_desc}'
                 )
-            """
+                """
             execute_query(add_new_course_query)
 
             return redirect("admin_new_course")
@@ -161,6 +177,81 @@ def admin_new_active_course():
         pass
 
     return render_template("admin-active-course.html")
+
+
+@app.route('/admin_attendance', methods=["GET", "POST"])
+def admin_attendance():
+    students_query = """
+        SELECT DISTINCT
+			stud.student_id,
+			stud.name
+        FROM student stud
+        JOIN class ON stud.student_id = class.student_id
+        JOIN attendance att ON class.class_id = att.class_id
+        """
+    students = execute_query(students_query)
+
+    if 'student' in request.args:
+        student = request.args.get("student")
+
+        if student == '':
+            return redirect(request.referrer)
+
+        student_courses_query = f"""
+            SELECT
+                class.class_id,
+                crs.name,
+                stud.name
+            FROM
+                class
+                JOIN active_course ac ON class.ac_id = ac.ac_id
+                JOIN course crs ON ac.course_id = crs.course_id
+                JOIN student stud ON class.student_id = stud.student_id
+                JOIN attendance att ON class.class_id = att.class_id
+            WHERE class.student_id = {student}
+            """
+        courses = execute_query(student_courses_query)
+        student_name = courses[0][2]
+
+    else:
+        student_name = None
+        courses = None
+
+    if 'course' in request.args:
+        course = request.args.get("course")
+
+        if course == '':
+            return redirect(request.referrer)
+
+        date_attendance_query = f"""
+            SELECT
+                att.status,
+                att.date,
+                crs.name,
+                ac.ac_id,
+                stud.name
+            FROM
+                attendance att
+                JOIN class ON att.class_id = class.class_id
+                JOIN active_course ac ON class.ac_id = ac.ac_id
+                JOIN course crs ON ac.course_id = crs.course_id
+                JOIN student stud on class.student_id = stud.student_id
+            WHERE class.class_id = {course}
+            """
+        attendance = execute_query(date_attendance_query)
+        course_name = attendance[0][2]
+        student_name = attendance[0][4]
+
+    else:
+        course_name = None
+        attendance = None
+
+    return render_template("admin-attendance.html",
+                           students=students,
+                           student=student_name,
+                           courses=courses,
+                           course=course_name,
+                           attendance=attendance)
 
 
 @app.route('/teacher_work_place', methods=["GET", "POST"])
@@ -312,11 +403,20 @@ def teacher_attendance():
             SELECT attendance_id
             FROM attendance
             WHERE class_id = {class_id}
-            AND date = {att_date}
+            AND date = '{att_date}'
             """
         att_check = execute_query(att_check_query)
 
-        if att_check == []:
+        if att_check != []:
+            update_attendance_query = f"""
+                UPDATE attendance SET
+                    status = '{att_status}'
+                WHERE date = '{att_date}'
+                AND class_id = {class_id}
+                """
+            execute_query(update_attendance_query)
+
+        else:
             add_attendance_query = f"""
                 INSERT INTO attendance (
                     class_id,
@@ -329,14 +429,6 @@ def teacher_attendance():
                 )
                 """
             execute_query(add_attendance_query)
-
-        else:
-            update_attendance_query = f"""
-                UPDATE attendance SET
-                    status = '{att_status}'
-                WHERE attendance_id = {att_check[0][0]}
-                """
-            execute_query(update_attendance_query)
 
         return redirect(request.referrer)
 

@@ -136,6 +136,7 @@ def admin_user():
           , date            TEXT        NOT NULL
           , status           TEXT
           , FOREIGN KEY (class_id) REFERENCES class (class_id)
+          , UNIQUE(class_id, date)
         )
         """
     execute_query(create_attendance_table_query)
