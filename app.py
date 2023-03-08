@@ -26,21 +26,29 @@ def greetings():
 
 @app.before_request
 def auth():
+    admin_path_list = ['/admin', '/admin_new_user', '/admin_new_course',
+                       '/admin_new_active_course', '/admin_attendance']
+    teacher_path_list = ['/teacher_work_place', '/teacher_add_grade',
+                         '/teacher_attendance']
+
     if "role" not in session.keys():
         session["role"] = "anonymous"
         session["username"] = "anonymous"
 
-    elif session["role"] != "Admin":
-        if '/control_panel' in request.full_path:
-            message = "You do not have permissions"
-
+    if any(route in request.full_path for route in admin_path_list):
+        if session['role'] != 'Admin':
+            message = 'You do not have permissions'
+            return render_template('login.html', message=message)
+        
+    elif any(route in request.full_path for route in teacher_path_list):
+        if session['role'] != 'Teacher':
+            message = 'You do not have permissions'
             return render_template('login.html', message=message)
 
-    elif session["role"] != "Student":
-        pass
-
-    elif session["role"] != "Teacher":
-        pass
+    # elif any(route in request.full_path for route in student_path_list):
+    #     if session['role'] != 'Student':
+    #         message = 'You do not have permissions'
+    #         return render_template('login.html', message=message)
 
 
 @app.route('/')
@@ -183,8 +191,8 @@ def admin_new_active_course():
 def admin_attendance():
     students_query = """
         SELECT DISTINCT
-			stud.student_id,
-			stud.name
+            stud.student_id,
+            stud.name
         FROM student stud
         JOIN class ON stud.student_id = class.student_id
         JOIN attendance att ON class.class_id = att.class_id
