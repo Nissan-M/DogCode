@@ -1,3 +1,28 @@
+yourapp/
+├── app/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── database.py
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── home.html
+│   │   └── ...
+│   └── static/
+│       ├── css/
+│       ├── js/
+│       ├── images/
+│       └── ...
+├── tests/
+│   ├── __init__.py
+│   ├── test_models.py
+│   ├── test_routes.py
+│   └── ...
+├── config.py
+├── run.py
+└── README.md
+
+
 data structure : 
 
     tables : 

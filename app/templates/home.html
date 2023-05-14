@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block css %}/static/css/home.css{% endblock %}
+{% block title %}DogCode{% endblock %}
+{% block content %}
+<div class="inner">
+    <div class="inner_tagline">
+        <h1>
+            Learn new skills,<br>
+            pursue a rewarding profession,<br>
+            and achieve success with DogCode.
+        </h1>
+        <h2>
+            Our cutting-edge curriculum and expert guidance will help you unlock your <br>
+            coding potential and realize your dreams in the world of tech.
+        </h2>
+    </div>
+
+    <div class="inner_stat">
+        <div class="stat_card">
+
+        </div>
+        <div class="stat_card">
+            
+        </div>
+        <div class="stat_card">
+            
+        </div>
+        <div class="stat_card">
+            
+        </div>
+    </div>
+
+    <form class="inner_reg" action="/register" method="POST">
+        <div class="register_header">
+            <p style="font-size: 300%; font-weight: 700;">Join us</p>
+            <p style="font-size: 135%;">leave your details below</p>
+        </div>
+
+        <div class="register_field_1">
+            <input class="inp_register" name="name" type="text" placeholder="Name">
+        </div>
+
+        <div class="register_field_2">
+            <select class="inp_register" name="course_id" style="width: 215px; height: 31px;">
+                <option hidden>Course</option>
+            {% for course in courses %}
+                <option value="{{ course[0][0] }}">{{ course[1] }}</option>
+            {% endfor %}
+            </select>
+        </div>
+
+        <div class="register_field_3">
+            <input class="inp_register" name="phone" type="text" placeholder="Phone">
+        </div>
+
+        <div class="register_field_4">
+            <input class="inp_register" name="email" type="text" placeholder="Email">
+        </div>
+
+        <div class="register_field_5">
+            <input class="btn_register" type="submit" value="Leave Details">
+        </div>
+        
+    </form>
+    
+</div>
+{% endblock %}

@@ -1,32 +1,8 @@
 /* ----------ADMIN---------- */
-.section_admin {
-  grid-column-start: c1;
-  grid-column-end: c3;
-  grid-row-start: r2;
-  grid-row-end: r4;
 
+.main_container {
   display: grid;
-  grid-template-rows: [r1]20%[r2]20%[r3]20%[r4]20%[r5];
-}
-
-.con_1 {
-  grid-row-start: r1;
-  grid-row-end: r2;
-}
-
-.con_2 {
-  grid-row-start: r2;
-  grid-row-end: r3;
-}
-
-.con_3 {
-  grid-row-start: r3;
-  grid-row-end: r4;
-}
-
-.con_4 {
-  grid-row-start: r4;
-  grid-row-end: r5;
+  grid-template-columns: [c1][c2][c3];
 }
 
 /* ----------END---------- */
@@ -64,18 +40,6 @@
 
 .admin_link:hover {
   color: #FFBF00;
-}
-
-.admin_todo {
-  grid-row-start: r2;
-  grid-row-end: r3;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #FFBF00;
-  border: 1px solid black;
 }
 
 .admin_inner {
