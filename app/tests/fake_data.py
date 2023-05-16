@@ -1,13 +1,18 @@
+import sys
+import os
 from faker import Faker
 from random import choice
-from app.models import User, Student, Teacher, Course
-import os
+from datetime import datetime, timedelta
+from app.models import User, Student, Teacher, Course, ActiveCourse
 
+
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..."))
+sys.path.insert(0, parent_dir)
 
 fake = Faker()
 
 
-def add_fake_user(role, num, faker_seed):
+def add_fake_user(role: str, num: int, faker_seed: int):
     Faker.seed(faker_seed)
     users = [(role, fake.email(), fake.password()) for _ in range(num)]
     try:
@@ -17,7 +22,8 @@ def add_fake_user(role, num, faker_seed):
         print(f"Error occurred while adding fake users: {str(e)}")
 
 
-def add_fake_profile(role, num, faker_seed, student=None, teacher=None):
+def add_fake_profile(role: str, num: int, faker_seed: int,
+                     student: bool = False, teacher: bool = False):
     add_fake_user(role, num, faker_seed)
     Faker.seed(faker_seed)
     user_list = User.read()
@@ -35,13 +41,13 @@ def add_fake_profile(role, num, faker_seed, student=None, teacher=None):
         )
         phone = '000-0000000'
         address = 'TEST'
-        if student:
+        if student is True and user.role == 'Student':
             birth_date = fake.date_of_birth(
                 minimum_age=18,
                 maximum_age=30
             ).strftime("%Y-%m-%d")
             Student.create(
-                user_id=user._id,
+                user_id=user.user_id,
                 name=name,
                 image=image,
                 gender=gender,
@@ -49,13 +55,13 @@ def add_fake_profile(role, num, faker_seed, student=None, teacher=None):
                 phone=phone,
                 address=address
             )
-        if teacher:
+        if teacher is True and user.role == 'Teacher':
             birth_date = fake.date_of_birth(
                 minimum_age=30,
                 maximum_age=55
             ).strftime("%Y-%m-%d")
             Teacher.create(
-                user_id=user._id,
+                user_id=user.user_id,
                 name=name,
                 image=image,
                 gender=gender,
@@ -110,6 +116,29 @@ def add_course():
         Course.create(*course)
 
 
+def create_activeCourse():
+    courses = Course.read()
+    teachers = Teacher.read()
+
+    for teacher in teachers:
+        course = choice(courses)
+        name = f"{course.name} - {teacher.name}"
+        today = datetime.now().date()
+        start_date = fake.date_between_dates(
+            date_start=today,
+            date_end=today + timedelta(days=30)
+        )
+        end_date = start_date + timedelta(days=7)
+
+        ActiveCourse.create(
+            course_id=course.course_id,
+            teacher_id=teacher.teacher_id,
+            name=name,
+            start_date=start_date,
+            end_date=end_date
+        )
+
+
 if __name__ == "__main__":
     add_fake_profile(
         role="Student",
@@ -124,3 +153,4 @@ if __name__ == "__main__":
         teacher=True
     )
     add_course()
+    create_activeCourse()

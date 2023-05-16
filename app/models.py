@@ -1,14 +1,20 @@
+import sys
+import os
 from app.database import execute_query
 
 
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, parent_dir)
+
+
 class User:
-    def __init__(self, _id, role, email, password) -> None:
-        self._id = _id
+    def __init__(self, user_id: int, role: str, email: str, password: str):
+        self.user_id = user_id
         self.role = role
         self.email = email
         self.password = password
 
-    def create(role, email, password):
+    def create(role: str, email: str, password: str):
         query = """
             INSERT INTO user
             (role, email, password)
@@ -21,7 +27,7 @@ class User:
             print(f"Error occurred while creating user: {str(e)}")
 
     def read():
-        query = "SELECT user_id, role, email, password FROM user"
+        query = "SELECT * FROM user"
         try:
             users_db = execute_query(query)
             users = [User(*user_data) for user_data in users_db]
@@ -29,40 +35,43 @@ class User:
         except Exception as e:
             print(f"Error occurred while retrieving users: {str(e)}")
 
-    def update(_id, role=None, email=None, password=None):
-        update_query = "UPDATE user SET"
+    def update(user_id: int, role: str = None, email: str = None,
+               password: str = None):
+        query = "UPDATE user SET"
         params = []
-        if role is not None:
-            update_query += " role = ?,"
+        if role:
+            query += " role = ?,"
             params.append(role)
-        if email is not None:
-            update_query += " email = ?,"
+        if email:
+            query += " email = ?,"
             params.append(email)
-        if password is not None:
-            update_query += " password = ?,"
+        if password:
+            query += " password = ?,"
             params.append(password)
-        update_query = update_query.rstrip(',') + " WHERE user_id = ?"
-        params.append(_id)
+        query = query.rstrip(',') + " WHERE user_id = ?"
+        params.append(user_id)
         try:
-            execute_query(update_query, params)
+            execute_query(query, params)
         except Exception as e:
             print(f"Error occurred while updating user: {str(e)}")
 
-    def delete(_id):
-        delete_query = "DELETE FROM user WHERE user_id = ?"
+    def delete(user_id: int):
+        query = "DELETE FROM user WHERE user_id = ?"
+        params = [user_id]
         try:
-            execute_query(delete_query, (_id,))
+            execute_query(query, tuple(params))
         except Exception as e:
             print(f"Error occurred while deleting user: {str(e)}")
 
-    def auth(email, psw):
-        auth_query = """
+    def auth(email: str, psw: str):
+        query = """
             SELECT role, email
             FROM user
             WHERE email = ? AND password = ?
         """
+        params = [email, psw]
         try:
-            result = execute_query(auth_query, (email, psw))
+            result = execute_query(query, tuple(params))
             if result:
                 return result[0]
         except Exception as e:
@@ -72,8 +81,9 @@ class User:
 
 
 class Student():
-    def __init__(self, student_id, user_id, name, image, gender, birth_date,
-                 phone, address, email, password, courses=None):
+    def __init__(self, student_id: int, user_id: int, name: str, image: str,
+                 gender: str, birth_date: str, phone: str, address: str,
+                 email: str, password: str):
         self.student_id = student_id
         self.user_id = user_id
         self.name = name
@@ -84,10 +94,10 @@ class Student():
         self.address = address
         self.email = email
         self.password = password
-        self.courses = courses
 
-    def create(user_id, name='Default', image='Default', gender='Default',
-               birth_date='Default', phone='Default', address='Default'):
+    def create(user_id: int, name: str, image: str = 'Null',
+               gender: str = 'Null', birth_date: str = 'Null',
+               phone: str = 'Null', address: str = 'Null'):
         query = """
             INSERT INTO student (
                 user_id, name, image, gender, birth_date, phone, address
@@ -181,14 +191,19 @@ class Student():
         except Exception as e:
             print(f"Error occurred while update student: {str(e)}")
 
-    def delete():
-        pass
+    def delete(student_id):
+        query = "DELETE FROM student WHERE student_id = ?"
+        params = [student_id]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while deleting student: {str(e)}")
 
 
 class Teacher():
-    def __init__(self, _id, user_id, name, image, gender, birth_date, phone,
-                 address, email, password, courses):
-        self._id = _id
+    def __init__(self, teacher_id, user_id, name, image, gender, birth_date,
+                 phone, address, email, password):
+        self.teacher_id = teacher_id
         self.user_id = user_id
         self.name = name
         self.image = image
@@ -198,7 +213,6 @@ class Teacher():
         self.address = address
         self.email = email
         self.password = password
-        self.courses = courses
 
     def create(user_id, name='Default', image='Default', gender='Default',
                birth_date='Default', phone='Default', address='Default'):
@@ -229,7 +243,7 @@ class Teacher():
         """
         try:
             teachers_db = execute_query(query)
-            teachers = [Student(*teacher_data) for teacher_data in teachers_db]
+            teachers = [Teacher(*teacher_data) for teacher_data in teachers_db]
             return teachers
         except Exception as e:
             print(f"Error occurred while retrieving teachers: {str(e)}")
@@ -301,13 +315,18 @@ class Teacher():
         except Exception as e:
             print(f"Error occurred while update Teacher: {str(e)}")
 
-    def delete():
-        pass
+    def delete(teacher_id):
+        query = "DELETE FROM teacher WHERE teacher_id = ?"
+        params = [teacher_id]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while deleting teacher: {str(e)}")
 
 
 class Course():
-    def __init__(self, _id, name, image, desc) -> None:
-        self._id = _id
+    def __init__(self, course_id, name, image, desc) -> None:
+        self.course_id = course_id
         self.name = name
         self.image = image
         self.desc = desc
@@ -325,20 +344,200 @@ class Course():
             print(f"Error occurred while creating course: {str(e)}")
 
     def read():
-        pass
+        query = "SELECT * FROM course"
+        try:
+            courses_db = execute_query(query)
+            courses = [Course(*course_data) for course_data in courses_db]
+            return courses
+        except Exception as e:
+            print(f"Error occurred while retrieving courses: {str(e)}")
 
-    def update():
-        pass
+    def read_by_id(course_id):
+        query = "SELECT * FROM course WHERE course_id = ?"
+        params = [course_id]
+        try:
+            course_data = execute_query(query, tuple(params))[0]
+            course = Student(*course_data)
+            return course
+        except Exception as e:
+            print(f"Error occurred while retrieving course: {str(e)}")
 
-    def delete():
-        pass
+    def update(course_id, name=None, image=None, desc=None):
+        query = "UPDATE course SET"
+        params = []
+        if name:
+            query += " name = ?,"
+            params.append(name)
+        if image:
+            query += " image = ?,"
+            params.append(image)
+        if desc:
+            query += " desc = ?,"
+            params.append(desc)
+        query = query.rstrip(',') + " WHERE course_id = ?"
+        params.append(course_id)
+        try:
+            execute_query(query, params)
+        except Exception as e:
+            print(f"Error occurred while updating course: {str(e)}")
+
+    def delete(course_id):
+        query = "DELETE FROM course WHERE course_id = ?"
+        params = [course_id]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while deleting course: {str(e)}")
+
+
+class ActiveCourse():
+    def __init__(self, activeCourse_id: int, course_id: int, teacher_id: int,
+                 name: str, start_date: str, end_date: str):
+        self.activeCourse_id = activeCourse_id
+        self.course_id = course_id
+        self.teacher_id = teacher_id
+        self.name = name
+        self.start_date = start_date
+        self.end_date = end_date
+
+    def create(course_id: int, teacher_id: int, name: str, start_date: str,
+               end_date: str):
+        query = """
+            INSERT INTO active_course
+            (course_id, teacher_id, name, start_date, end_date)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        params = [course_id, teacher_id, name, start_date, end_date]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while creating activeCourse: {str(e)}")
+
+    def read():
+        query = "SELECT * FROM active_course"
+        try:
+            data_base = execute_query(query)
+            activeCourses = [Student(*data) for data in data_base]
+            return activeCourses
+        except Exception as e:
+            print(f"Error occurred while retrieving activeCourses: {str(e)}")
+
+    def read_by_id(activeCourse_id: int):
+        query = "SELECT * FROM active_course WHERE ac_id = ?"
+        params = [activeCourse_id]
+        try:
+            data = execute_query(query, tuple(params))[0]
+            activeCourse = Student(*data)
+            return activeCourse
+        except Exception as e:
+            print(f"Error occurred while retrieving activeCourse: {str(e)}")
+
+    def update(activeCourse_id: int, course_id: int = None,
+               teacher_id: int = None, name: str = None,
+               start_date: str = None, end_date: str = None):
+        query = "UPDATE active_course SET"
+        params = []
+        if course_id:
+            query += " course_id = ?,"
+            params.append(course_id)
+        if teacher_id:
+            query += " teacher_id = ?,"
+            params.append(teacher_id)
+        if name:
+            query += " name = ?,"
+            params.append(name)
+        if start_date:
+            query += " start_date = ?,"
+            params.append(start_date)
+        if end_date:
+            query += " end_date = ?,"
+            params.append(end_date)
+        query = query.rstrip(',') + " WHERE ac_id = ?"
+        params.append(activeCourse_id)
+        try:
+            execute_query(query, params)
+        except Exception as e:
+            print(f"Error occurred while updating activeCourse: {str(e)}")
+
+    def delete(activeCourse_id: int):
+        query = "DELETE FROM active_course WHERE ac_id = ?"
+        params = [activeCourse_id]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while deleting activeCourse: {str(e)}")
 
 
 class Class():
-    def __init__(self) -> None:
-        pass
+    def __init__(self, class_id: int, activeCourse_id: int, student_id: int,
+                 grades: list):
+        self.class_id = class_id
+        self.activeCourse_id = activeCourse_id
+        self.student_id = student_id
+        self.grades = grades
 
+    def create(activeCourse_id: int, student_id: int, grades: list = 'NULL'):
+        query = """
+            INSERT INTO class
+            (ac_id, student_id, grades)
+            VALUES (?, ?, ?)
+        """
+        params = [activeCourse_id, student_id, grades]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while creating activeCourse: {str(e)}")
 
-class register():
-    def __init__(self) -> None:
-        pass
+    def read():
+        query = "SELECT * FROM active_course"
+        try:
+            data_base = execute_query(query)
+            activeCourses = [Student(*data) for data in data_base]
+            return activeCourses
+        except Exception as e:
+            print(f"Error occurred while retrieving activeCourses: {str(e)}")
+
+    def read_by_id(activeCourse_id: int):
+        query = "SELECT * FROM active_course WHERE ac_id = ?"
+        params = [activeCourse_id]
+        try:
+            data = execute_query(query, tuple(params))[0]
+            activeCourse = Student(*data)
+            return activeCourse
+        except Exception as e:
+            print(f"Error occurred while retrieving activeCourse: {str(e)}")
+
+    def update(activeCourse_id: int, course_id: int = None,
+               teacher_id: int = None, name: str = None,
+               start_date: str = None, end_date: str = None):
+        query = "UPDATE active_course SET"
+        params = []
+        if course_id:
+            query += " course_id = ?,"
+            params.append(course_id)
+        if teacher_id:
+            query += " teacher_id = ?,"
+            params.append(teacher_id)
+        if name:
+            query += " name = ?,"
+            params.append(name)
+        if start_date:
+            query += " start_date = ?,"
+            params.append(start_date)
+        if end_date:
+            query += " end_date = ?,"
+            params.append(end_date)
+        query = query.rstrip(',') + " WHERE ac_id = ?"
+        params.append(activeCourse_id)
+        try:
+            execute_query(query, params)
+        except Exception as e:
+            print(f"Error occurred while updating activeCourse: {str(e)}")
+
+    def delete(activeCourse_id: int):
+        query = "DELETE FROM active_course WHERE ac_id = ?"
+        params = [activeCourse_id]
+        try:
+            execute_query(query, tuple(params))
+        except Exception as e:
+            print(f"Error occurred while deleting activeCourse: {str(e)}")

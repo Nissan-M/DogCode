@@ -72,6 +72,7 @@ def create_tables():
             ac_id       INTEGER     PRIMARY KEY
           , course_id   INTEGER     NOT NULL
           , teacher_id  INTEGER     NOT NULL
+          , name        TEXT        NOT NULL
           , start_date  DATE        NOT NULL
           , end_date    DATE        NOT NULL
           , FOREIGN KEY (course_id) REFERENCES course (course_id)
