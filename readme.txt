@@ -23,7 +23,9 @@ JB project - students/
 │   │   ├── about.html
 │   │   ├── admin.html
 │   │   ├── teacher-wp.html
-│   │   └── student-wp.html
+│   │   ├── teacher-profile.html
+│   │   ├── student-wp.html
+│   │   └── student-profile.html
 │   └── static/
 │       ├── css/
 │       ├── js/
