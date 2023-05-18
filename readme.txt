@@ -37,4 +37,4 @@ JB project - students/
 ├── fake_data.py
 ├── database.db
 ├── app.py
-└── README.md
+└── README.txt
