@@ -3,66 +3,53 @@ import os
 from faker import Faker
 from random import choice
 from datetime import datetime, timedelta
-from app.models import User, Student, Teacher, Course, ActiveCourse
+from app.models import Student, Teacher, Course, ActiveCourse
 
 
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..."))
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "."))
 sys.path.insert(0, parent_dir)
 
 fake = Faker()
 
 
-def add_fake_user(role: str, num: int, faker_seed: int):
+def add_fake_profile(role: str, num: int, faker_seed: int):
     Faker.seed(faker_seed)
-    users = [(role, fake.email(), fake.password()) for _ in range(num)]
-    try:
-        for user in users:
-            User.create(*user)
-    except Exception as e:
-        print(f"Error occurred while adding fake users: {str(e)}")
-
-
-def add_fake_profile(role: str, num: int, faker_seed: int,
-                     student: bool = False, teacher: bool = False):
-    add_fake_user(role, num, faker_seed)
-    Faker.seed(faker_seed)
-    user_list = User.read()
-
-    for user in user_list:
+    for _ in range(num):
+        role = role
+        email = fake.email()
+        password = fake.password()
         gender = choice(["Male", "Female"])
-        name = (
-            fake.name_male()
-            if gender == "Male"
-            else fake.name_female()
-        )
+        name = (fake.name_male() if gender == "Male" else fake.name_female())
         image = os.path.join(
             "app/static/images",
             "male.jpg" if gender == "Male" else "female.jpg"
         )
         phone = '000-0000000'
         address = 'TEST'
-        if student is True and user.role == 'Student':
+        if role == 'Student':
             birth_date = fake.date_of_birth(
                 minimum_age=18,
                 maximum_age=30
             ).strftime("%Y-%m-%d")
             Student.create(
-                user_id=user.user_id,
+                email=email,
                 name=name,
+                password=password,
                 image=image,
                 gender=gender,
                 birth_date=birth_date,
                 phone=phone,
                 address=address
             )
-        if teacher is True and user.role == 'Teacher':
+        elif role == 'Teacher':
             birth_date = fake.date_of_birth(
                 minimum_age=30,
                 maximum_age=55
             ).strftime("%Y-%m-%d")
             Teacher.create(
-                user_id=user.user_id,
+                email=email,
                 name=name,
+                password=password,
                 image=image,
                 gender=gender,
                 birth_date=birth_date,
@@ -114,6 +101,7 @@ def add_course():
     courses = list(zip(course_names, images, course_desc))
     for course in courses:
         Course.create(*course)
+        Course.create(name=course[0], image=course[1], desc=course[2])
 
 
 def create_activeCourse():
@@ -143,14 +131,12 @@ if __name__ == "__main__":
     add_fake_profile(
         role="Student",
         num=30,
-        faker_seed=0,
-        student=True
+        faker_seed=0
     )
     add_fake_profile(
         role="Teacher",
         num=10,
-        faker_seed=1,
-        teacher=True
+        faker_seed=1
     )
     add_course()
     create_activeCourse()
