@@ -59,16 +59,23 @@ class Student():
             print(f"Error occurred while retrieving students: {str(e)}")
             return None
 
-    def read_by_id(student_id: int = None):
+    def read_by(student_id: int = None, user_id: int = None):
         query = """
             SELECT stud.student_id, stud.user_id, stud.name, stud.image,
                    stud.gender, stud.birth_date, stud.phone, stud.address,
                    users.email, users.password
             FROM students AS stud
             JOIN users ON stud.user_id = users.user_id
-            WHERE student_id = ?
+            WHERE
         """
-        params = [student_id]
+
+        if student_id:
+            query += " student_id = ?"
+            params = [student_id]
+
+        if user_id:
+            query += " user_id = ?"
+            params = [user_id]
 
         try:
             data_row = execute_query(query, tuple(params))[0]

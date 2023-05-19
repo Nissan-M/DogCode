@@ -36,7 +36,10 @@ class Attendance():
 
         try:
             data_rows = execute_query(query)
-            attendance_objects = [Attendance(*data_row) for data_row in data_rows]
+            attendance_objects = [
+                Attendance(*data_row)
+                for data_row in data_rows
+            ]
             return attendance_objects
         except Exception as e:
             print(f"Error occurred while retrieving attendance: {str(e)}")

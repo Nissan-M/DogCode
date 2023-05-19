@@ -90,7 +90,7 @@ class User:
 
     def auth(email: str, password: str):
         query = """
-            SELECT role, email
+            SELECT user_id, role
             FROM users
             WHERE email = ? AND password = ?
         """
@@ -100,8 +100,8 @@ class User:
             data_row = execute_query(query, tuple(params))
 
             if data_row:
-                role, email = data_row[0]
-                return {'role': role, 'email': email}
+                user_id, role = data_row[0]
+                return {'user_id': user_id, 'role': role}
 
         except Exception as e:
             print(f"Error occurred while authenticating user: {str(e)}")

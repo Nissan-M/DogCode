@@ -431,13 +431,13 @@ def test_update_student_course_2():
     assert len(student_course) == 2
 
 
-# def test_delete_student_course():
-#     StudentCourse.delete(student_course_id=1)
-#     Student.delete(student_id=1)
-#     TeacherCourse.delete(teacher_course_id=1)
-#     Teacher.delete(teacher_id=1)
-#     Course.delete(course_id=1)
+def test_delete_student_course():
+    StudentCourse.delete(student_course_id=1)
+    Student.delete(student_id=1)
+    TeacherCourse.delete(teacher_course_id=1)
+    Teacher.delete(teacher_id=1)
+    Course.delete(course_id=1)
 
-#     student_course = StudentCourse.read()
+    student_course = StudentCourse.read()
 
-#     assert len(student_course) == 0
+    assert len(student_course) == 0

@@ -17,7 +17,35 @@
 
   <body>
     <div class="main">
-      {% include 'navbar.html' %}
+      <div class="navbar">
+        <div class="logo"><a href="/">DogCode</a></div>
+
+        <form class="nav_search" action="/search">
+          <input class="inp_search" id="inp_search" type="text" name="search"
+                 placeholder="Search..." />
+        </form>
+      
+        <div class="nav_links">
+          {% if session["role"] == "Student"%}
+          <a href="/student_wp">Work Place</a>
+          {% elif session["role"] == "Teacher"%}
+          <a href="/teacher_wp">Work Place</a>
+          {% elif session["role"] == "Admin"%}
+          <a href="/admin_wp">Work Place</a>
+          {% endif %}
+          <a href="">Courses</a>
+          <a href="">Teachers</a>
+        </div>
+      
+        <div class="nav_login">
+          {% if session["role"] == "anonymous"%}
+            <a href="/login">login</a>
+          {% else %}
+            <a href="/logout">Logout</a>
+          {% endif %}
+        </div>
+      </div>
+      
       {% block content %}
       {% endblock %}
       
