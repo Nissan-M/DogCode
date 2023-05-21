@@ -1,40 +1,49 @@
 Project files:
 
-JB project - students/
+JB project - DogCode/
 ├── app/
 │   ├── __init__.py
 │   ├── database.py
-│   ├── models.py
-│   ├── crud/
-│   │   ├── crud_user.py
-│   │   ├── crud_teacher.py
-│   │   ├── crud_student.py
-│   │   ├── crud_course.py
-│   │   ├── crud_teacher_course.py
-│   │   ├── crud_student_course.py
-│   │   ├── crud_attendance.py
-│   │   └── crud_lead.py
-│   ├── routes.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   ├── teacher.py
+│   │   ├── student.py
+│   │   ├── course.py
+│   │   ├── teacher_course.py
+│   │   ├── student_course.py
+│   │   ├── attendance.py
+│   │   └── lead.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── auth.py
+│   │   ├── courses.py
+│   │   ├── home.py
+│   │   ├── login.py
+│   │   └── teachers.py
 │   ├── templates/
-│   │   ├── base.html
-│   │   ├── home.html
-│   │   ├── course.html
-│   │   ├── teacher.html
-│   │   ├── about.html
 │   │   ├── admin.html
-│   │   ├── teacher-wp.html
-│   │   ├── teacher-profile.html
-│   │   ├── student-wp.html
-│   │   └── student-profile.html
+│   │   ├── base.html
+│   │   ├── courses.html
+│   │   ├── home.html
+│   │   ├── login.html
+│   │   ├── navbar.html
+│   │   ├── student.html
+│   │   ├── studentP.html
+│   │   ├── teacher.html
+│   │   ├── teacherP.html
+│   |   └── students.html
 │   └── static/
 │       ├── css/
 │       ├── js/
 │       └── images/
+├── database/
+|   └──database.db
 ├── tests/
 │   ├── __init__.py
 │   ├── test_models.py
 │   └── test_routes.py
 ├── fake_data.py
-├── database.db
 ├── app.py
 └── README.txt

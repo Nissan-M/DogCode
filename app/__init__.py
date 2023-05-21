@@ -1,11 +1,11 @@
 from flask import Flask
-from .routes import bp
+from app.routes import register_routes
 
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-app.register_blueprint(bp)
+register_routes(app)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block css %}admin.css{% endblock %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+
+<div class="section_admin">
+    <form action="" method="post" class="teacher_course">
+        <div class="header">
+            <p>allocate a teacher to a course</p>
+            <select name="" id="">
+                <option hidden>Select Course</option>
+                {% for course in courses %}
+                <option value="{{ course.course_id }}">{{ course.name }}</option>
+                {$ endfor $}
+            </select>
+            <select name="" id="">
+                <option hidden>Select Teacher</option>
+                {% for teacher in teachers %}
+                <option value="{{ teacher.teacher_id }}">{{ teacher.name }}</option>
+                {$ endfor $}
+            </select>
+        </div>
+    </form>
+
+    <form action="" method="post" class="student_course">
+
+    </form>
+
+    <form action="" method="post" class="attendance">
+
+    </form>
+
+    <form action="" method="post" class="new_user">
+
+    </form>
+
+    <form action="" method="post" class="new_course">
+
+    </form>
+
+</div>
+{% endblock %}

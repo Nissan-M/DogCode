@@ -1,7 +1,7 @@
 import sqlite3
 
 
-DATABASE_NAME = "database.db"
+DATABASE_NAME = "database/database.db"
 
 
 def execute_query(query, params=None):
@@ -76,7 +76,6 @@ def create_tables():
             teacher_course_id       INTEGER     PRIMARY KEY
           , course_id               INTEGER     NOT NULL
           , teacher_id              INTEGER     NOT NULL
-          , name                    TEXT        NOT NULL
           , start_date              DATE        NOT NULL
           , end_date                DATE        NOT NULL
           , FOREIGN KEY (course_id) REFERENCES courses (course_id)
@@ -104,9 +103,9 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS leads (
             lead_id                 INTEGER     PRIMARY KEY
           , course_id               INTEGER     NOT NULL
-          , name                    TEXT
-          , phone                   TEXT
-          , email                   TEXT
+          , name                    TEXT        NOT NULL
+          , phone                   TEXT        NOT NULL
+          , email                   TEXT        NOT NULL
           , FOREIGN KEY (course_id) REFERENCES courses (course_id)
         )
         """]

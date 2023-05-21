@@ -15,6 +15,7 @@
 .main {
   display: grid;
   grid-template-rows: [r1] 75px [r2] calc(100vh - 75px) [r3] 300px [r4];
+  width: 100%;
   overflow: hidden;
 }
 
@@ -28,7 +29,7 @@
   display: grid;
   grid-template-columns: minmax(0, 100px) [c1] minmax(220px, 25%) [c2] minmax(320px, 25%) [c3] auto [c4] 120px [c5] minmax(0, 100px);
   
-  background-color: #FFB200;
+  background-color: #FFBF00;
   border: 1px solid black;
 }
   .navbar > * {
@@ -78,8 +79,10 @@
 .nav_links {
   grid-column-start: c3;
   grid-column-end: c4;
-  justify-content: start;
+  display: flex;
+  flex-direction: row-reverse;
   gap: 20px;
+  padding-right: 25px;
 }
   .nav_links > a {
     width: max-content;

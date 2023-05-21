@@ -1,0 +1,33 @@
+<div class="navbar">
+  <div class="logo"><a href="/">DogCode</a></div>
+
+  <form class="nav_search" action="/search">
+    <input
+      class="inp_search"
+      id="inp_search"
+      type="text"
+      name="search"
+      placeholder="Search..."
+    />
+  </form>
+
+  <div class="nav_links">
+    {% if session["role"] == "Student"%}
+    <a href="/home">Work Place</a>
+    {% elif session["role"] == "Teacher"%}
+    <a href="/home">Work Place</a>
+    {% elif session["role"] == "Admin"%}
+    <a href="/admin">Work Place</a>
+    {% endif %}
+    <a href="/courses">Courses</a>
+    <a href="/teachers">Teachers</a>
+  </div>
+
+  <div class="nav_login">
+    {% if session["role"] == "anonymous"%}
+    <a href="/login">login</a>
+    {% else %}
+    <a href="/logout">Logout</a>
+    {% endif %}
+  </div>
+</div>

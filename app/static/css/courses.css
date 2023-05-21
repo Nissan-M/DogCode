@@ -1,0 +1,26 @@
+.section_courses {
+  grid-row-start: r2;
+  grid-row-end: r3;
+  width: 100%;
+
+  display: grid;
+  grid-template-rows: [r1] 240px [r2] 100% [r3];
+}
+.header {
+  grid-row-start: r1;
+  grid-row-end: r2;
+
+  padding: 75px 100px;
+  background-color: #ffbf00;
+  border: 1px solid #222222;
+  border-top: none;
+}
+.header p {
+  font-size: 24px;
+  font-weight: 500;
+}
+.inner_content {
+  grid-row-start: r2;
+  grid-row-end: r3;
+  background-color: #F1F1F1;
+}

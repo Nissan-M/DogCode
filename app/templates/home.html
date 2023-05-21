@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block css %}/static/css/home.css{% endblock %}
+{% block css %}home.css{% endblock %}
 {% block title %}DogCode{% endblock %}
 {% block content %}
+
 <div class="inner">
     <div class="inner_tagline">
         <h1>
@@ -30,38 +31,21 @@
         </div>
     </div>
 
-    <form class="inner_reg" action="/register" method="POST">
-        <div class="register_header">
-            <p style="font-size: 300%; font-weight: 700;">Join us</p>
-            <p style="font-size: 135%;">leave your details below</p>
+    <form action="/lead" method="post" class="lead">
+        <div class="lead_tagline">
+            <h1 style="font-size: 32px; font-weight: bold;">Join us</h1>
+            <h2 style="font-size: 24px; font-weight: bold;">leave your details below</h2>
         </div>
-
-        <div class="register_field_1">
-            <input class="inp_register" name="name" type="text" placeholder="Name">
-        </div>
-
-        <div class="register_field_2">
-            <select class="inp_register" name="course_id" style="width: 215px; height: 31px;">
-                <option hidden>Course</option>
+        <input type="text" name="name" class="lead_name" placeholder="Name">
+        <select name="course_id" class="lead_course">
+            <option hidden>Courses</option>
             {% for course in courses %}
-                <option value="{{ course[0][0] }}">{{ course[1] }}</option>
+            <option value="{{ course.course_id }}">{{ course.name }}</option>
             {% endfor %}
-            </select>
-        </div>
-
-        <div class="register_field_3">
-            <input class="inp_register" name="phone" type="text" placeholder="Phone">
-        </div>
-
-        <div class="register_field_4">
-            <input class="inp_register" name="email" type="text" placeholder="Email">
-        </div>
-
-        <div class="register_field_5">
-            <input class="btn_register" type="submit" value="Leave Details">
-        </div>
-        
+        </select>
+        <input type="text" name="phone" class="lead_phone" placeholder="Phone">
+        <input type="text" name="email" class="lead_email" placeholder="Email">
+        <input type="submit" class="btn_lead" value="Leave Details">
     </form>
-    
 </div>
 {% endblock %}

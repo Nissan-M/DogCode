@@ -1,13 +1,9 @@
-import sys
 import os
 from faker import Faker
 from random import choice
 from datetime import datetime, timedelta
-from app.models import Student, Teacher, Course, ActiveCourse
+from app.models import Student, Teacher, Course, TeacherCourse
 
-
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "."))
-sys.path.insert(0, parent_dir)
 
 fake = Faker()
 
@@ -104,13 +100,12 @@ def add_course():
         Course.create(name=course[0], image=course[1], desc=course[2])
 
 
-def create_activeCourse():
+def create_TeacherCourse():
     courses = Course.read()
     teachers = Teacher.read()
 
     for teacher in teachers:
         course = choice(courses)
-        name = f"{course.name} - {teacher.name}"
         today = datetime.now().date()
         start_date = fake.date_between_dates(
             date_start=today,
@@ -118,10 +113,9 @@ def create_activeCourse():
         )
         end_date = start_date + timedelta(days=7)
 
-        ActiveCourse.create(
+        TeacherCourse.create(
             course_id=course.course_id,
             teacher_id=teacher.teacher_id,
-            name=name,
             start_date=start_date,
             end_date=end_date
         )
@@ -139,4 +133,4 @@ if __name__ == "__main__":
         faker_seed=1
     )
     add_course()
-    create_activeCourse()
+    create_TeacherCourse()

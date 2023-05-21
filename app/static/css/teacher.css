@@ -1,149 +1,26 @@
-.section_teacher {
-  grid-column-start: c1;
-  grid-column-end: c3;
+.section_teachers {
   grid-row-start: r2;
-  grid-row-end: r4;
+  grid-row-end: r3;
+  width: 100%;
 
   display: grid;
-  grid-template-rows: [r1] 54px [r2] 410px [r3] auto [r4];
-  grid-template-columns: [c1] 50% [c2] 50% [c3];
+  grid-template-rows: [r1] 240px [r2] 100% [r3];
 }
-
-/* ----------SUB-NAV---------- */
-
-.teacher_subnav {
-  grid-column-start: c1;
-  grid-column-end: c3;
+.header{
   grid-row-start: r1;
   grid-row-end: r2;
 
-  display: grid;
-  grid-template-columns: [c1] max-content [c2] auto [c3];
-
-  background-color: black;
+  padding: 75px 100px;
+  background-color: #ffbf00;
+  border: 1px solid #222222;
+  border-top: none;
 }
-
-.teacher_header {
-  grid-column-start: c1;
-  grid-column-end: c2;
-
-  align-self: center;
-  padding-left: 25px;
-
-  color: #ffffff;
-  font-size: 175%;
+.header p {
+  font-size: 24px;
+  font-weight: 500;
 }
-
-.teacher_links {
-  grid-column-start: c2;
-  grid-column-end: c3;
-
-  padding-right: 225px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  gap: 25px;
-}
-
-.teacher_link {
-  text-decoration: none;
-  color: #ffffff;
-  font-size: 135%;
-}
-/* ----------END---------- */
-
-/* ----------TEACHER-TODO---------- */
-
-.todo_con {
-  grid-column-start: c1;
-  grid-column-end: c3;
+.inner_content {
   grid-row-start: r2;
   grid-row-end: r3;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #FFBF00;
-  border: 1px solid black;
+  background-color: #F1F1F1;
 }
-
-/* ----------END---------- */
-
-/* ----------ATTENDANCE---------- */
-
-.teacher_attendance_card{
-  grid-column-start: c1;
-  grid-column-end: c2;
-  grid-row-start: r3;
-  grid-row-end: r4;
-
-  display: grid;
-  grid-template-rows: [r1] 40px [r2] 40px [r3] 40px [r4] auto [r5];
-
-  padding: 25px;
-}
-
-.attendance_header {
-  grid-row-start: r2;
-  grid-row-end: r3;
-}
-
-.attendance_date {
-  grid-row-start: r3;
-  grid-row-end: r4;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.attendance_form {
-  grid-row-start: r4;
-  grid-row-end: r5;
-
-  display: grid;
-  grid-template-columns: [c1] 100px [c2] max-content [c3] 50px [c4];
-  column-gap: 15px;
-  padding-top: 10px;
-  padding-bottom: 5px;
-  width: max-content;
-
-  border-bottom: 1px solid #cccccc;
-}
-
-.student_name {
-  grid-column-start: c1;
-  grid-column-end: c2;
-
-  text-decoration: none;
-  color: black;
-}
-
-.attendance_radio {
-  grid-column-start: c2;
-  grid-column-end: c3;
-
-  display: flex;
-  flex-direction: row;
-
-  gap: 8px;
-}
-
-.attendance_btn {
-  grid-column-start: c3;
-  grid-column-end: c4;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 65px;
-  height: 25px;
-  border: none;
-  border-radius: 15px;
-  font-size: 125%;
-  background-color: black;
-  color: #ffffff;
-}
-
-/* ----------END---------- */

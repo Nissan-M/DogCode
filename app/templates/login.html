@@ -1,32 +1,17 @@
 {% extends "base.html" %}
-{% block css %}/static/css/login.css{% endblock %}
+{% block css %}login.css{% endblock %}
 {%block title %}Login Page{% endblock %}
 {% block content %}
 <div class="section_login">
-  <form class="login_con" action="" method="POST">
+  <form class="login" action="" method="POST">
     <div class="header">
-      <h2>Login</h2>
+      <h1 style="font-size: 32px; font-weight: 500;">Welcome back!</h1>
+      <h2 style="font-size: 24px; font-weight: 500;">Let's continue learning together.</h2>
     </div>
-    <div class="form_field_1">
-      <div class="field_item">
-        <i class="fa-solid fa-user"></i>
-        <input name="email" class="form_input" type="email" placeholder="Email / Username">
-      </div>
-    </div>
-    <div class="form_field_2">
-      <div class="field_item">
-        <i class="fa-solid fa-lock"></i>
-        <input name="password" class="form_input" type="password" placeholder="Password">
-      </div>
-    </div>
-    <div class="form_field_3">
-      <input class="btn-login" type="submit" value="Login">
-    </div>
-    <div class="form_field_4">
-      {% if message %}
-      <p style="font-size: 150%;">{{ message }}</p>
-      {% endif %}
-    </div>
+    <input name="email" type="email" placeholder="User Name / Email">
+    <input name="password" type="password" placeholder="Password">
+    <input class="btn-login" type="submit" value="Login">
+    {% if message %}<p class="message">{{ message }}</p>{% endif %}
   </form>
 </div>
 {% endblock %}
