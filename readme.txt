@@ -1,5 +1,3 @@
-Project files:
-
 JB project - DogCode/
 ├── app/
 │   ├── __init__.py
