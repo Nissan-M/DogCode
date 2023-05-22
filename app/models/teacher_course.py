@@ -8,11 +8,14 @@ sys.path.insert(0, parent_dir)
 
 
 class TeacherCourse():
-    def __init__(self, teacher_course_id: int, course_id: int, teacher_id: int,
+    def __init__(self, teacher_course_id: int, course_id: int,
+                 course_name: str, teacher_id: int, teacher_name: str,
                  start_date: str, end_date: str):
         self.teacher_course_id = teacher_course_id
         self.course_id = course_id
+        self.course_name = course_name
         self.teacher_id = teacher_id
+        self.teacher_name = teacher_name
         self.start_date = start_date
         self.end_date = end_date
 
@@ -32,9 +35,16 @@ class TeacherCourse():
 
     def read():
         query = """
-            SELECT teacher_course_id, course_id, teacher_id, start_date,
-                   end_date
-            FROM teachers_courses
+            SELECT tc.teacher_course_id,
+                   tc.course_id,
+                   courses.name,
+                   tc.teacher_id,
+                   teach.name,
+                   tc.start_date,
+                   tc.end_date
+            FROM teachers_courses AS tc
+            JOIN courses ON tc.course_id = courses.course_id
+            JOIN teachers AS teach ON tc.teacher_id = teach.teacher_id
         """
 
         try:
@@ -48,9 +58,16 @@ class TeacherCourse():
     def read_by(teacher_course_id: int = None, course_id: int = None,
                 teacher_id: int = None):
         query = """
-            SELECT teacher_course_id, course_id, teacher_id, start_date,
-                   end_date
-            FROM teachers_courses
+            SELECT tc.teacher_course_id,
+                   tc.course_id,
+                   courses.name,
+                   tc.teacher_id,
+                   teach.name,
+                   tc.start_date,
+                   tc.end_date
+            FROM teachers_courses AS tc
+            JOIN courses ON tc.course_id = courses.course_id
+            JOIN teachers AS teach ON tc.teacher_id = teach.teacher_id
         """
 
         if teacher_course_id:

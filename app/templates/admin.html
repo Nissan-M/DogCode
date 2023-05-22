@@ -4,31 +4,63 @@
 {% block content %}
 
 <div class="section_admin">
-    <form action="" method="post" class="teacher_course">
-        <div class="header">
-            <p>allocate a teacher to a course</p>
-            <select name="" id="">
-                <option hidden>Select Course</option>
+    <div class="con_teacher_course">
+        <form action="/admin_teacher_course" method="post" class="teacher_course">
+            <p>Allocate a teacher to a course</p>
+            <select name="tc_course_id" id="teacher_course_courese_id">
+                <option hidden>Select course</option>
                 {% for course in courses %}
                 <option value="{{ course.course_id }}">{{ course.name }}</option>
-                {$ endfor $}
+                {% endfor %}
             </select>
-            <select name="" id="">
-                <option hidden>Select Teacher</option>
+            <select name="tc_teacher_id" id="teacher_course_teacher_id">
+                <option hidden>Select teacher</option>
                 {% for teacher in teachers %}
                 <option value="{{ teacher.teacher_id }}">{{ teacher.name }}</option>
-                {$ endfor $}
+                {% endfor %}
             </select>
-        </div>
-    </form>
+            <input type="date" name="tc_start_date" id="teacher_course_start_date">
+            <input type="date" name="tc_end_date" id="teacher_course_end_date">
+            <input type="submit" value="Allocate" id="teacher_course_submit">
+        </form>
+    </div>
 
-    <form action="" method="post" class="student_course">
+    <div class="con_student_course">
+        <form action="/admin_student_course" method="post" class="student_course">
+            <p>Add a student to an assigned course</p>
+            <select name="tc_id" id="student_course_tc_id">
+                <option hidden>Select allocated course</option>
+                {% for tc in teachers_courses %}
+                <option value="{{ tc.teacher_course_id }}">
+                    {{ tc.course_name }} - {{ tc.teacher_name }}
+                </option>
+                {% endfor %}
+            </select>
+            <select name="studnet_id" id="student_course_student_id">
+                <option hidden>Select student</option>
+                {% for student in students %}
+                <option value="{{ student.student_id }}">{{ student.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Add" id="student_course_submit">
+        </form>
+    </div>
 
-    </form>
-
-    <form action="" method="post" class="attendance">
-
-    </form>
+    <div class="con_new_user">
+        <form action="/admin_student_course" method="post" class="new_user">
+            <p>Register new account</p>
+            <input type="text" name="reg_name" id="reg_name" placeholder="Name">
+            <input type="email" name="reg_email" id="reg_email" placeholder="Email">
+            <input type="text" name="reg_password" id="reg_password" placeholder="Password">
+            <input type="text" name="reg_phone" id="reg_phone" placeholder="Phone">
+            <select name="reg_role" id="reg_role">
+                <option hidden>Select role</option>
+                <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+            </select>
+            <input type="submit" value="Enter" id="reg_submit">
+        </form>
+    </div>
 
     <form action="" method="post" class="new_user">
 
@@ -36,7 +68,7 @@
 
     <form action="" method="post" class="new_course">
 
-    </form>
+    </form> -->
 
 </div>
 {% endblock %}

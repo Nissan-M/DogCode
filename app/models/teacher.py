@@ -1,7 +1,7 @@
 import sys
 import os
 from app.database import execute_query
-from app.models.user import User
+from app.models import User
 
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..."))
