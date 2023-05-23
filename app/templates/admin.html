@@ -5,7 +5,7 @@
 
 <div class="section_admin">
     <div class="con_teacher_course">
-        <form action="/admin_teacher_course" method="post" class="teacher_course">
+        <form action="/create_teacher_course" method="post" class="teacher_course">
             <p>Allocate a teacher to a course</p>
             <select name="tc_course_id" id="teacher_course_courese_id">
                 <option hidden>Select course</option>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="con_new_user">
-        <form action="/admin_student_course" method="post" class="new_user">
+        <form action="/admin_new_user" method="post" class="new_user">
             <p>Register new account</p>
             <input type="text" name="reg_name" id="reg_name" placeholder="Name">
             <input type="email" name="reg_email" id="reg_email" placeholder="Email">
@@ -62,13 +62,19 @@
         </form>
     </div>
 
-    <form action="" method="post" class="new_user">
-
-    </form>
+    <div class="con_new_course">
+        <form action="/admin_new_course" method="post" class="new_course">
+            <p>Add new course</p>
+            <input type="text" name="new_course_name" id="new_course_name">
+            <input type="file" name="new_course_image" id="new_course_image">
+            <textarea name="new_course_desc" id="new_course_desc" cols="30" rows="10"></textarea>
+            <input type="submit" value="Add" id="new_course_submit">
+        </form>
+    </div>
 
     <form action="" method="post" class="new_course">
 
-    </form> -->
+    </form>
 
 </div>
 {% endblock %}
